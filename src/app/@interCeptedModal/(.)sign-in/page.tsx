@@ -1,10 +1,8 @@
 "use client";
 
-import SignUp from "@/components/auth/SignUp";
-import CloseModal from "@/components/CloseModal";
+import SignIn from "@/components/auth/SignIn";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-
 const Page: React.FC = () => {
   const router = useRouter();
 
@@ -22,13 +20,8 @@ const Page: React.FC = () => {
   }, []);
 
   return (
-    <div className="fixed inset-0 bg-zinc-900/20 z-10">
-      <div className="centering-absolute flex flex-col-reverse">
-        <div className="absolute top-5 right-14 z-10">
-          <CloseModal />
-        </div>
-        <SignUp isModal />
-      </div>
+    <div className="fixed inset-0 flex justify-center items-center bg-zinc-900/30 backdrop-blur-sm z-30 overflow-hidden">
+      <SignIn isModal />
     </div>
   );
 };

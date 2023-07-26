@@ -12,10 +12,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-  authModal,
+  interCeptedModal,
 }: {
   children: React.ReactNode;
-  authModal: React.ReactNode;
+  interCeptedModal: React.ReactNode;
 }) {
   return (
     <ClerkProvider
@@ -28,7 +28,7 @@ export default function RootLayout({
     >
       <html lang="en">
         <body className={inter.className}>
-          {authModal}
+          {interCeptedModal}
           {children}
         </body>
       </html>

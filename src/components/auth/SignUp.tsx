@@ -3,6 +3,7 @@
 import { ClerkLoaded, SignUp as SignUpClerk } from "@clerk/nextjs";
 import Link from "next/link";
 import Loader from "./Loader";
+import CloseModal from "../CloseModal";
 
 interface SignUpProps {
   isModal?: boolean;
@@ -14,8 +15,13 @@ const SignUp: React.FC<SignUpProps> = ({ isModal = false, isPage }) => {
     <div className="relative min-h-[260.25px]">
       <Loader />
       <ClerkLoaded>
+        {isModal && (
+          <div className="closeModal">
+            <CloseModal />
+          </div>
+        )}
         <SignUpClerk afterSignUpUrl="/app" signInUrl="/sign-in" />
-        <div className="absolute text-sm bottom-[48px] left-[61px] link-on-signInUp">
+        <div className="absolute text-sm bottom-[48px] left-[61px] hideAfterClerkLoaded">
           <span className="text-black/60">Have an account? </span>
           {isPage ? (
             <a href="/sign-in" className="focus-visible:ring-2 ring-gray-500">
