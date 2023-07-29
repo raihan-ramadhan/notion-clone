@@ -20,7 +20,7 @@ const Page: React.FC = () => {
   }, []);
 
   return (
-    <div className="fixed inset-0 flex justify-center items-center bg-zinc-900/30 backdrop-blur-sm z-30 overflow-hidden">
+    <div className="fixed inset-0 flex justify-center items-center bg-zinc-900/30 dark:bg-white/20 backdrop-blur-sm z-30 overflow-hidden">
       <SignIn isModal />
     </div>
   );

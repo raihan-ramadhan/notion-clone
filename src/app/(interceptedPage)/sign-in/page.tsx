@@ -6,7 +6,7 @@ import SignIn from "@/components/auth/SignIn";
 
 export default function Page() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-gray-200 border">
+    <main className="flex min-h-screen flex-col items-center justify-center">
       <div className="relative">
         <Link
           href="/"

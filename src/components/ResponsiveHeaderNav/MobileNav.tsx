@@ -14,7 +14,7 @@ const MobileNav: React.FC<MobileNavProps> = ({ isPage }) => {
   return (
     <ScrollArea
       className={cn(
-        "fixed inset-0 top-[62px] bg-white z-20",
+        "fixed inset-0 top-[62px] bg-background z-20",
         !isPage && "lg:hidden"
       )}
       ScrollAreaStyle={{ position: "fixed" }}

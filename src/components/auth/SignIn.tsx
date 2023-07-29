@@ -22,7 +22,7 @@ const SignIn: React.FC<SignInProps> = ({ isModal = false, isPage }) => {
         )}
         <SignInClerk afterSignInUrl="/app" signUpUrl="/sign-up" />
         <div className="hideAfterClerkLoaded absolute text-sm bottom-[48px] left-[61px]">
-          <span className="text-black/60">No account? </span>
+          <span className="text-primary/60">No account? </span>
           {isPage ? (
             <a href="/sign-up" className="focus-visible:ring-2 ring-gray-500">
               Sign up

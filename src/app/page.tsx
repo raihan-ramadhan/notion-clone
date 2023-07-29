@@ -40,7 +40,7 @@ export default function Home() {
                   <span className="flex items-end px-3">
                     <Image
                       priority
-                      className="h-[45px] w-auto md:h-[58px] lg:h-[68px]"
+                      className="h-[45px] w-auto md:h-[58px] lg:h-[68px] "
                       src={"/images/docs-icon.png"}
                       height={70}
                       width={52}
@@ -82,26 +82,39 @@ export default function Home() {
               Get Notion free
             </Link>
           </header>
-          <Image
-            className="max-w-[850px] w-full"
-            src="/images/home-hero.png"
-            alt="home-hero"
-            height={260}
-            width={852}
-            priority
-            role="presentation"
-          />
+
+          <picture>
+            <source
+              srcSet="/images/home-hero-dark.png"
+              media="(prefers-color-scheme: dark)"
+            />
+            <Image
+              className="max-w-[850px] w-full"
+              src="/images/home-hero.png"
+              alt="home-hero"
+              height={260}
+              width={852}
+              priority
+              role="presentation"
+            />
+          </picture>
         </section>
 
         <div className="w-[768px] md:w-[unset]">
-          <Image
-            className="h-auto w-full md:max-w-[1024px] mx-auto"
-            src="/images/sidekick-desktop-app.png"
-            alt="home-hero"
-            width={1024}
-            height={640}
-            priority
-          />
+          <picture>
+            <source
+              srcSet="/images/sidekick-desktop-app-dark.png"
+              media="(prefers-color-scheme: dark)"
+            />
+            <Image
+              className="h-auto w-full md:max-w-[1024px] mx-auto"
+              src="/images/sidekick-desktop-app.png"
+              alt="home-hero"
+              width={1024}
+              height={640}
+              priority
+            />
+          </picture>
         </div>
       </main>
     </div>

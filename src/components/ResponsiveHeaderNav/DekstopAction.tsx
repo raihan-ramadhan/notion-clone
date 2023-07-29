@@ -16,9 +16,10 @@ const DekstopAction: React.FC = () => {
     >
       {pathName !== "/mobile-nav" && (
         <>
+          {/* Left Menu */}
           <NavMenu />
 
-          {/* SignIn and SignUp */}
+          {/* Right Menu */}
           <div className="flex gap-2">
             <Link
               className={cn(

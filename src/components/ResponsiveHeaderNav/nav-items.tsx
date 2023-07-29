@@ -10,7 +10,7 @@ type NavItems = Array<{
       id: string;
       // eslint-disable-next-line no-unused-vars
       icon?: (props: IconsProps) => any;
-      img?: string;
+      img?: [string, string];
       href: string;
       itemBody: {
         itemLabel: string;
@@ -132,7 +132,10 @@ const navItems: NavItems = [
         id: "solutions-1",
         items: [
           {
-            img: "/images/team-size-enterprise.png",
+            img: [
+              "/images/team-size-enterprise.png",
+              "/images/team-size-enterprise-dark.png",
+            ],
             id: "solutions-1-item-1",
             href: "/enterprise",
             itemBody: {
@@ -141,7 +144,10 @@ const navItems: NavItems = [
             },
           },
           {
-            img: "/images/team-size-small-business.png",
+            img: [
+              "/images/team-size-small-business.png",
+              "/images/team-size-small-business-dark.png",
+            ],
             id: "solutions-1-item-2",
             href: "/team",
             itemBody: {
@@ -150,7 +156,10 @@ const navItems: NavItems = [
             },
           },
           {
-            img: "/images/team-size-personal.png",
+            img: [
+              "/images/team-size-personal.png",
+              "/images/team-size-personal-dark.png",
+            ],
             id: "solutions-1-item-3",
             href: "/personal",
             itemBody: {

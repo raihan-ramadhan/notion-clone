@@ -13,7 +13,7 @@ const Nav: React.FC<NavProps> = ({ isPage }) => {
   const router = useRouter();
 
   return (
-    <div className="h-[62px] fixed top-0 z-10 p-4 inset-x-0 bg-white">
+    <div className="h-[62px] fixed top-0 z-10 p-4 inset-x-0 bg-background ">
       <header className="sticky top-0 flex items-center justify-between">
         <a href="/" className="mr-2">
           <Icons.logo />
