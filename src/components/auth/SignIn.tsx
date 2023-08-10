@@ -4,6 +4,7 @@ import { SignIn as SignInClerk, ClerkLoaded } from "@clerk/nextjs";
 import Link from "next/link";
 import Loader from "./Loader";
 import CloseModal from "../CloseModal";
+import { useShowMobileNav } from "@/hooks/use-show-mobile-nav";
 
 interface SignInProps {
   isModal?: boolean;
@@ -11,6 +12,8 @@ interface SignInProps {
 }
 
 const SignIn: React.FC<SignInProps> = ({ isModal = false, isPage }) => {
+  const { showMobileNav } = useShowMobileNav();
+
   return (
     <div className="relative min-h-[260.25px]">
       <Loader />
@@ -20,7 +23,7 @@ const SignIn: React.FC<SignInProps> = ({ isModal = false, isPage }) => {
             <CloseModal />
           </div>
         )}
-        <SignInClerk afterSignInUrl="/app" signUpUrl="/sign-up" />
+        <SignInClerk signUpUrl="/sign-up" />
         <div className="hideAfterClerkLoaded absolute text-sm bottom-[48px] left-[61px]">
           <span className="text-primary/60">No account? </span>
           {isPage ? (
@@ -29,7 +32,7 @@ const SignIn: React.FC<SignInProps> = ({ isModal = false, isPage }) => {
             </a>
           ) : (
             <Link
-              href="/sign-up"
+              href={`/sign-up${showMobileNav ? "?showMobileNav=1" : ""}`}
               replace={isModal}
               className="focus-visible:ring-2 ring-gray-500"
             >

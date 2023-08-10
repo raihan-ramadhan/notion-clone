@@ -25,7 +25,7 @@
     --secondary: 0 0% 95%;
     --secondary-foreground: 0 0% 7%;
 
-    --accent: 0 0% 95%;
+    --accent: 0 0% 92%;
     --accent-foreground: 0 0% 7%;
 
     --destructive: 0 84.2% 60.2%;
@@ -67,6 +67,7 @@
     --ring: 0 0% 20%;
   }
 }
+
 @layer base {
   * {
     @apply border-border;

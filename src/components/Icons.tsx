@@ -4,17 +4,41 @@ import {
   Cross1Icon,
   MoonIcon,
   SunIcon,
+  CaretSortIcon,
+  DoubleArrowLeftIcon,
+  DoubleArrowRightIcon,
+  MagnifyingGlassIcon,
+  ClockIcon,
+  GearIcon,
+  PlusCircledIcon,
+  PlusIcon,
+  FileTextIcon,
+  TrashIcon,
+  DotsHorizontalIcon,
 } from "@radix-ui/react-icons";
 
 export type IconsProps = {
   className?: string;
 };
 
+export type IconsNames = keyof typeof Icons;
+
 export const Icons = {
   HamburgerMenu: HamburgerMenuIcon,
   X: Cross1Icon,
   Moon: MoonIcon,
   Sun: SunIcon,
+  CaretSort: CaretSortIcon,
+  DoubleArrowLeft: DoubleArrowLeftIcon,
+  DoubleArrowRight: DoubleArrowRightIcon,
+  Search: MagnifyingGlassIcon,
+  Clock: ClockIcon,
+  Gear: GearIcon,
+  PlusCircle: PlusCircledIcon,
+  FileText: FileTextIcon,
+  Plus: PlusIcon,
+  Delete: TrashIcon,
+  DotsHorizontalIcon: DotsHorizontalIcon,
   logo: () => (
     <svg
       className="h-8 w-24 fill-black dark:fill-white"

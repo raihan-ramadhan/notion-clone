@@ -18,6 +18,9 @@ export const clerkProviderConfig: ClerkOptions = {
       socialButtonsBlockButton__loading: "text-primary",
       alertText__danger: "text-primary",
       alert__danger: "border-none ring-[1px] ring-ring",
+      modalBackdrop: "bg-zinc-900/30 dark:bg-white/20 backdrop-blur-sm",
+      navbar: " [&_*]:text-primary",
+      scrollBox: " [&_*]:text-primary",
     },
   },
 };

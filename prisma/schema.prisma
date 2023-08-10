@@ -12,7 +12,7 @@ datasource db {
 
 model Documents {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  publicId  String   @db.ObjectId
+  publicId  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   title     String   @db.String

@@ -1,7 +1,12 @@
 {
-  "extends": "next/core-web-vitals",
+  "plugins": ["@tanstack/query"],
+  "extends": [
+    "plugin:@tanstack/eslint-plugin-query/recommended",
+    "next/core-web-vitals"
+  ],
   "rules": {
     "no-console": ["warn"],
-    "no-unused-vars": ["warn"]
+    "no-unused-vars": ["warn"],
+    "@tanstack/query/exhaustive-deps": "error"
   }
 }

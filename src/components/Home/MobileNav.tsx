@@ -30,13 +30,13 @@ const MobileNav: React.FC<MobileNavProps> = ({ isPage }) => {
           <div className="flex flex-col gap-4 mt-6">
             <Link
               className={buttonVariants({ variant: "default" })}
-              href="/sign-up"
+              href="/sign-up?showMobileNav=1"
             >
               Get Notion free
             </Link>
             <Link
               className={buttonVariants({ variant: "outline" })}
-              href="/sign-in"
+              href="/sign-in?showMobileNav=1"
             >
               Log in
             </Link>

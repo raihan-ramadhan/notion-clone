@@ -1,10 +1,36 @@
 import PreventBubblingClient from "@/components/PreventBubblingClient";
-import Nav from "@/components/ResponsiveHeaderNav/Nav";
+import Nav from "@/components/Home/Nav";
 import { buttonVariants } from "@/components/ui/Button";
 import Image from "next/image";
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { auth } from "@clerk/nextjs";
+import { nanoid } from "nanoid";
+import { prisma } from "@/lib/db";
+import { getInitialDoc } from "@/actions/getInitialDoc";
 
-export default function Home() {
+export default async function Home() {
+  const { userId } = auth();
+
+  if (userId) {
+    const document = await getInitialDoc(userId);
+
+    // find first document to redirect if already logged in
+    if (document) return redirect(`/${document.publicId}`);
+
+    //   if there is no doc yet make one then redirect
+    const newId = nanoid(12);
+    await prisma.documents.create({
+      data: {
+        publicId: newId,
+        ownerId: userId,
+        title: "Untitled",
+      },
+    });
+
+    return redirect(`/${newId}`);
+  }
+
   return (
     <div>
       <Nav />

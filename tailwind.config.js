@@ -67,10 +67,15 @@ module.exports = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: 0 },
         },
+        "slide-from-left": {
+          from: { left: "-100%" },
+          to: { left: 0 },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "slide-from-left": "slide-from-left 0.2s ease-out",
       },
     },
   },

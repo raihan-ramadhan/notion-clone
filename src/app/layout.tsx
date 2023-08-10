@@ -1,9 +1,10 @@
-import "./globals.css";
+import "../styles/globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
-import ThemeProvider from "@/components/ThemeProvider";
+import Providers from "@/components/Providers";
 import { clerkProviderConfig } from "@/config/clerk";
+import { Toaster } from "@/components/ui/Toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
@@ -18,10 +19,8 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
   auth,
-  mobileNav,
 }: {
   children: React.ReactNode;
-  mobileNav: React.ReactNode;
   auth: React.ReactNode;
 }) {
   return (
@@ -29,11 +28,11 @@ export default function RootLayout({
       <html lang="en" suppressHydrationWarning>
         <head />
         <body className={inter.className}>
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <Providers>
             {auth}
-            {mobileNav}
             {children}
-          </ThemeProvider>
+            <Toaster />
+          </Providers>
         </body>
       </html>
     </ClerkProvider>
