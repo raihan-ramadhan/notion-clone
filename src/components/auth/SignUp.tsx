@@ -1,6 +1,9 @@
 "use client";
 
-import { ClerkLoaded, SignUp as SignUpClerk } from "@clerk/nextjs";
+import {
+  ClerkLoaded,
+  SignUp as SignUpClerk,
+} from "@clerk/nextjs/app-beta/client";
 import Link from "next/link";
 import Loader from "./Loader";
 import CloseModal from "../CloseModal";

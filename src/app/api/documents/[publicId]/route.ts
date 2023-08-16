@@ -1,10 +1,10 @@
-import { auth } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/app-beta";
 import { NextResponse } from "next/server";
-import { nanoid } from "nanoid";
 import { prisma } from "@/lib/db";
 import { getInitialDoc } from "@/actions/getInitialDoc";
 import { z } from "zod";
 import { DocumentDeleteValidator } from "@/lib/validators/Documents";
+import { createUntitled } from "@/actions/createUntitled";
 
 export async function DELETE(req: Request) {
   try {
@@ -18,7 +18,7 @@ export async function DELETE(req: Request) {
     const { currentDoc, id, publicId } = DocumentDeleteValidator.parse(body);
 
     // Delete document by id
-    await prisma.documents.delete({
+    await prisma.document.delete({
       where: { id },
     });
 
@@ -31,15 +31,9 @@ export async function DELETE(req: Request) {
       }
 
       // if there is no doc from user then create one
-      const newId = nanoid(12);
-      const newDoc = await prisma.documents.create({
-        data: {
-          publicId: newId,
-          ownerId: userId,
-          title: "Untitled",
-        },
-      });
-      return NextResponse.json(newDoc.publicId);
+      const { publicId } = await createUntitled(userId);
+
+      return NextResponse.json(publicId);
     }
 
     return NextResponse.json(null);

@@ -10,12 +10,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Documents {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  publicId  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  title     String   @db.String
-  ownerId   String   @db.String
-  document  Json?    @db.Json
+model Document {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  publicId   String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  ownerId    String   @db.String
+  editorJson Json?    @db.Json
+  title      String   @db.String
+  iconImage  String?  @db.String
+  coverImage String?  @db.String
 }

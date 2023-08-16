@@ -1,61 +1,122 @@
-const Page: React.FC = () => {
+import { findDoc } from "@/actions/findDoc";
+import Header from "@/components/Header";
+import CoverImageBtn from "@/components/Main/CoverImageBtn";
+import IconImageBtn from "@/components/Main/IconImageBtn";
+import { cn } from "@/lib/utils";
+import { Metadata, ResolvingMetadata } from "next";
+import Image from "next/image";
+import { notFound } from "next/navigation";
+
+interface ParamsProps {
+  params: { publicId: string };
+}
+
+const Page: React.FC<ParamsProps> = async ({ params: { publicId } }) => {
+  const doc = await findDoc(publicId);
+
+  if (!doc) return notFound();
+
+  const { title, coverImage, iconImage } = doc;
+
   return (
-    <main className="p-3 overflow-y-auto h-[calc(100vh_-_48px)]">
-      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Commodi
-      excepturi veniam dolores accusantium distinctio eos non quibusdam
-      voluptatum nesciunt omnis iste aliquid accusamus fugiat deserunt, ea
-      asperiores blanditiis quas incidunt ullam nam. Quos voluptate nam fugiat
-      totam fuga veritatis maxime veniam ex sunt amet nihil est fugit
-      praesentium dolorem modi vel culpa ipsa distinctio minus dicta architecto
-      iusto, dolorum at ab. Neque sed modi vero? Consequatur facilis iusto
-      voluptatem illum! Itaque rerum vel delectus ipsa provident cupiditate
-      quae, expedita nihil. Corrupti nemo numquam incidunt tempora. Aliquid illo
-      hic ea rem tenetur? Omnis eveniet iure sequi officiis eius consectetur
-      placeat ipsum deserunt, alias, totam accusamus veritatis? Adipisci laborum
-      atque, impedit vel quas possimus ipsam voluptatum quis magni architecto
-      culpa neque modi delectus pariatur, eligendi sit. Itaque repellat tempore
-      ullam quae accusamus officiis voluptatem illum, quia laborum a possimus
-      harum, minus repellendus suscipit, sequi porro adipisci ipsum rem error
-      recusandae explicabo! Accusamus optio debitis, placeat vero id aliquid
-      reiciendis ratione. Incidunt nam, alias consequatur neque ratione
-      praesentium et. Itaque voluptates, temporibus non, similique, sit illum
-      obcaecati ea molestias soluta ipsa culpa ratione. Voluptate animi
-      consequuntur minima nobis exercitationem? Rerum totam nihil quas,
-      cupiditate impedit distinctio assumenda sint alias natus non quia,
-      temporibus voluptatum nulla eius illo nobis culpa quisquam in deserunt
-      neque. Sequi eveniet unde asperiores, quibusdam quae soluta voluptas
-      ratione adipisci et non vero illo eius! Tempora, similique, molestiae
-      expedita officiis officia sit quaerat, esse quos voluptas eum dolorum unde
-      neque illum rem laborum dolore magni possimus commodi! Iste quae fuga
-      temporibus aliquam facilis alias impedit amet mollitia, voluptatibus,
-      suscipit similique quidem excepturi quisquam porro odit maiores nesciunt?
-      Ullam hic architecto ipsa, provident ex illum labore harum doloremque
-      facere corrupti excepturi rerum quidem ab blanditiis, alias dolore enim?
-      Amet culpa aspernatur qui nostrum quidem dolore earum adipisci, incidunt
-      ut, possimus quas. Lorem ipsum dolor sit amet, consectetur adipisicing
-      elit. Excepturi sapiente laborum laboriosam eos iste id officiis! Eos,
-      facere. Culpa nam quam corporis praesentium ab doloremque nesciunt
-      quibusdam nisi fugit, vel nemo, illum labore accusantium odit ex et
-      necessitatibus illo commodi temporibus dolorem repudiandae omnis vero.
-      Consectetur, dignissimos! Perspiciatis esse fugit inventore dicta
-      voluptatem, labore et blanditiis, quia, delectus sed ullam vel error
-      provident distinctio quis aliquid atque facilis beatae. Id incidunt
-      magnam, delectus cumque assumenda aut excepturi architecto iure doloribus
-      modi quibusdam itaque ratione illum aspernatur quod aliquam sint soluta
-      rem numquam asperiores. Sit aliquam velit quis voluptas, sed dignissimos
-      architecto doloribus, sequi pariatur perferendis deleniti nam tempora!
-      Rerum sint quis cupiditate, dolores sunt praesentium maxime culpa officiis
-      quam enim inventore magni? Explicabo repellendus non doloremque, maxime
-      laboriosam quae! Nobis in beatae, quo nemo repellendus voluptatem ab.
-      Voluptatum repellendus quod voluptates autem quibusdam, totam unde
-      deserunt sunt nam asperiores! Earum, sed. Sed cumque quae sunt, amet
-      reiciendis illum repellendus, minima animi enim fugit blanditiis sit
-      provident commodi vero voluptate deserunt alias! Neque fuga amet maxime
-      voluptatem! Laborum optio perferendis perspiciatis non omnis repellendus!
-      Earum tenetur dicta debitis optio rerum fugit obcaecati! Alias, soluta. Et
-      id quaerat quis quam officia! Culpa.
-    </main>
+    <>
+      <Header doc={doc} />
+      <main className="overflow-y-auto h-[calc(100vh_-_48px)] overflow-hidden">
+        {coverImage ? (
+          <div className="h-[280px] w-full relative">
+            <Image
+              src={coverImage}
+              className="object-cover object-left-bottom z-0"
+              alt="cover image"
+              quality={95}
+              priority
+              fill
+            />
+          </div>
+        ) : null}
+
+        <section className="relative max-w-[900px] mx-auto px-24">
+          <div
+            className={cn(
+              "group",
+              iconImage && coverImage && "pt-[70px]",
+              !iconImage && coverImage && "pt-[25px]",
+              iconImage && !coverImage && "pt-16",
+              !iconImage && !coverImage && "pt-10"
+            )}
+          >
+            {iconImage && (
+              <Image
+                className={cn(
+                  "w-[125px] h-[125px] object-cover",
+                  coverImage && "absolute z-10 left-24 top-0 -translate-y-1/2 "
+                )}
+                alt="icons image"
+                src={iconImage}
+                quality={95}
+                height={125}
+                width={125}
+                priority
+              />
+            )}
+
+            {!(iconImage && coverImage) && (
+              <div className="h-6 inline-flex gap-2 pt-5">
+                {!iconImage && <IconImageBtn />}
+                {!coverImage && <CoverImageBtn />}
+              </div>
+            )}
+
+            <h2 className="focus:outline-none text-4xl font-semibold py-5">
+              {title}
+            </h2>
+          </div>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum
+            earum exercitationem porro rerum nostrum itaque maxime fugit nulla
+            laudantium veritatis repellat, doloribus perspiciatis deleniti quis
+            dolorum quasi similique minima officiis impedit commodi? Nesciunt
+            nulla maxime pariatur fugit recusandae inventore delectus
+            reprehenderit modi, accusantium autem, voluptates asperiores
+            maiores, illo animi nemo repellat? Illum dignissimos aut corrupti
+            quisquam quos consequuntur dolore recusandae accusantium molestias,
+            error maxime mollitia voluptas facilis consequatur veritatis
+            voluptatibus id impedit dolor explicabo ducimus asperiores. Nam,
+            tempore velit aliquid, non error incidunt dolor, in blanditiis et
+            ducimus atque. Eligendi facere maiores accusamus ut reprehenderit
+            iure quia veniam deserunt ratione.
+          </p>
+        </section>
+      </main>
+    </>
   );
 };
 
 export default Page;
+
+export async function generateMetadata(
+  { params: { publicId } }: ParamsProps,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  // fetch data
+  const document = await findDoc(publicId);
+
+  // optionally access and extend (rather than replace) parent metadata
+  const previousImages = (await parent).openGraph?.images || [];
+
+  return {
+    title: document?.title ?? "Not Found",
+    openGraph: {
+      images: [...previousImages],
+    },
+    icons: {
+      icon: [
+        {
+          type: "image/x-icon",
+          sizes: "any",
+          url: document?.iconImage ?? "/favicon.ico",
+        },
+      ],
+    },
+  };
+}

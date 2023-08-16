@@ -1,27 +1,24 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import axios from "axios";
+import Sidebar from "./Sidebar";
+import MobileSidebar from "./Sidebar/MobileSidebar";
+
+import { cn } from "@/lib/utils";
+import { toast } from "@/hooks/use-toast";
+import { useRouter } from "next/navigation";
+import { DocumentType } from "@/types/db";
+import { useShowSidebar } from "@/store/use-show-sidebar";
+import { useEffect, useRef } from "react";
+import { useShowMobileSidebar } from "@/hooks/use-show-mobile-sidebar";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
 import {
   Panel,
   PanelGroup,
   PanelResizeHandle,
   ImperativePanelHandle,
 } from "react-resizable-panels";
-import Sidebar from "./Sidebar";
-import { cn } from "@/lib/utils";
-import Header from "./Header";
-import { useRouter } from "next/navigation";
-import { toast } from "@/hooks/use-toast";
-import { nanoid } from "nanoid";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
-import { DocumentType } from "@/types/db";
-
-import dynamic from "next/dynamic";
-import { useShowMobileSidebar } from "@/hooks/use-show-mobile-sidebar";
-// const MobileSidebar = dynamic(() => import("./Sidebar/MobileSidebar"), {
-//   ssr: false,
-// });
 
 interface Data {
   data: DocumentType[] | undefined;
@@ -45,6 +42,8 @@ export default function ReactResizablePanels({
   defaultLayout: number[];
   right: React.ReactNode;
 }) {
+  const { showMobileSidebar, toggleMobileSidebar } = useShowMobileSidebar();
+  const { showDekstopSidebar, toggleDekstopSidebar } = useShowSidebar();
   const onLayout = (sizes: number[]) => {
     document.cookie = `react-resizable-panels:layout=${JSON.stringify(sizes)}`;
   };
@@ -52,27 +51,13 @@ export default function ReactResizablePanels({
   const router = useRouter();
   const ref = useRef<ImperativePanelHandle>(null);
 
-  const { showMobileSidebar, toggleMobileSidebar } = useShowMobileSidebar();
-
-  const [showDekstopSidebar, setShowDekstopSidebar] = useState<boolean>(true);
-  const toggleDekstopSidebar = () => {
-    const panel = ref.current;
-    if (panel) {
-      showDekstopSidebar ? panel.collapse() : panel.expand();
-    }
-    setShowDekstopSidebar(!showDekstopSidebar);
-  };
-
   const query = useDocs();
   const queryClient = useQueryClient();
 
   const { mutate: addDoc } = useMutation({
     mutationFn: async () => {
-      const newId = nanoid(12);
-
       const { data: newDoc }: { data: string } = await axios.post(
-        "/api/untitled",
-        { publicId: newId }
+        "/api/untitled"
       );
 
       return newDoc;
@@ -96,14 +81,12 @@ export default function ReactResizablePanels({
     },
   });
 
-  const MobileSidebar = useMemo(
-    () =>
-      dynamic(() => import("./Sidebar/MobileSidebar"), {
-        ssr: false,
-      }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [showMobileSidebar]
-  );
+  useEffect(() => {
+    const panel = ref.current;
+    if (panel) {
+      showDekstopSidebar ? panel.collapse() : panel.expand();
+    }
+  }, [showDekstopSidebar]);
 
   return (
     <PanelGroup direction="horizontal" onLayout={onLayout}>
@@ -128,7 +111,7 @@ export default function ReactResizablePanels({
         className={cn(
           "w-[3px] bg-accent hover:bg-border",
           !showDekstopSidebar && "pointer-events-none",
-          "hidden md:block"
+          "!hidden md:!block"
         )}
       />
       <Panel className="bg-background" defaultSize={defaultLayout[1]}>
@@ -137,11 +120,6 @@ export default function ReactResizablePanels({
           query={query}
           showSidebar={showMobileSidebar}
           toggle={toggleMobileSidebar}
-        />
-        <Header
-          showDekstopSidebar={showDekstopSidebar}
-          toggleDekstopSidebar={toggleDekstopSidebar}
-          toggleMobileSidebar={toggleMobileSidebar}
         />
         {right}
       </Panel>

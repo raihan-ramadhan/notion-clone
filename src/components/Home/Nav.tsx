@@ -4,8 +4,8 @@ import { Icons } from "../Icons";
 import DekstopAction from "./DekstopAction";
 import MobileNav from "./MobileNav";
 import { Button } from "../ui/Button";
-import Link from "next/link";
 import { useShowMobileNav } from "@/hooks/use-show-mobile-nav";
+import Logo from "./Logo";
 
 const Nav: React.FC = () => {
   const { showMobileNav, toggleMobileNav } = useShowMobileNav();
@@ -13,9 +13,7 @@ const Nav: React.FC = () => {
   return (
     <div className="h-[62px] fixed top-0 z-10 p-4 inset-x-0 bg-background">
       <header className="sticky top-0 flex items-center justify-between">
-        <Link href="/" className="mr-2">
-          <Icons.logo />
-        </Link>
+        <Logo />
         <DekstopAction />
         <Button
           onClick={toggleMobileNav}

@@ -1,4 +1,4 @@
-import { ClerkLoading } from "@clerk/nextjs";
+import { ClerkLoading } from "@clerk/nextjs/app-beta/client";
 import { NotionLogoIcon } from "@radix-ui/react-icons";
 
 const Loader: React.FC = () => {

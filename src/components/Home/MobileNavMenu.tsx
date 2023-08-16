@@ -1,7 +1,7 @@
 "use client";
 
+import { product, download, solutions, resources } from "@/lib/nav-items";
 import { preventBubbling } from "@/lib/utils";
-import navItems from "./nav-items";
 import {
   Accordion,
   AccordionContent,
@@ -11,50 +11,120 @@ import {
 
 const MobileNavMenu: React.FC = () => {
   return (
-    <Accordion type="multiple" defaultValue={[navItems[0].id]}>
-      {navItems.map((item) => (
-        <AccordionItem key={item.id} value={item.id}>
-          <AccordionTrigger
-            id={`trigger-${item.id}`}
-            aria-controls={`content-${item.id}`}
-            className="text-lg font-semibold"
-          >
-            {item.label}
-          </AccordionTrigger>
-          <AccordionContent
-            id={`content-${item.id}`}
-            aria-labelledby={`trigger-${item.id}`}
-          >
-            {item.popup.map((popupItem) => (
-              <ul key={popupItem.id} className="py-1">
-                {popupItem?.sectionTitle && (
-                  <span className="text-[12px] opacity-70 py-1 pointer-events-none">
-                    {popupItem?.sectionTitle}
-                  </span>
-                )}
-                {popupItem.items.map((linkItem) => (
-                  <li key={linkItem.id} className="py-1">
-                    <a
-                      href={linkItem.href}
-                      className="cursor-not-allowed flex gap-4 w-full"
-                      onClick={preventBubbling}
-                    >
-                      {linkItem?.icon && (
-                        <div onClick={preventBubbling}>
-                          <linkItem.icon className="h-6 w-6 pointer-events-none" />
-                        </div>
-                      )}
-                      <div className="text-base">
-                        {linkItem.itemBody.itemLabel}
-                      </div>
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            ))}
-          </AccordionContent>
-        </AccordionItem>
-      ))}
+    <Accordion type="multiple" defaultValue={["product"]}>
+      {/* PRODUCT */}
+      <AccordionItem value={"product"}>
+        <AccordionTrigger className="text-lg font-semibold">
+          {product.label}
+        </AccordionTrigger>
+        <AccordionContent>
+          {product.popup.map((popupItem, index) => (
+            <ul key={index} className="py-1">
+              {popupItem.items.map((linkItem, idx) => (
+                <li key={idx} className="py-1">
+                  <a
+                    href={linkItem.href}
+                    className="cursor-not-allowed flex gap-4 w-full"
+                    onClick={preventBubbling}
+                  >
+                    {linkItem.icon && (
+                      <div onClick={preventBubbling}>{linkItem.icon}</div>
+                    )}
+                    <div className="text-base">
+                      {linkItem.itemBody.itemLabel}
+                    </div>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          ))}
+        </AccordionContent>
+      </AccordionItem>
+
+      {/* DOWNLOAD */}
+      <AccordionItem value={"download"}>
+        <AccordionTrigger className="text-lg font-semibold">
+          {download.label}
+        </AccordionTrigger>
+        <AccordionContent>
+          {download.popup.map((popupItem, index) => (
+            <ul key={index} className="py-1">
+              {popupItem.items.map((linkItem, idx) => (
+                <li key={idx} className="py-1">
+                  <a
+                    href={linkItem.href}
+                    className="cursor-not-allowed flex gap-4 w-full"
+                    onClick={preventBubbling}
+                  >
+                    <div className="text-base">
+                      {linkItem.itemBody.itemLabel}
+                    </div>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          ))}
+        </AccordionContent>
+      </AccordionItem>
+
+      {/* SOLUTIONS */}
+      <AccordionItem value={"solutions"}>
+        <AccordionTrigger className="text-lg font-semibold">
+          {solutions.label}
+        </AccordionTrigger>
+        <AccordionContent>
+          {solutions.popup.map((popupItem, index) => (
+            <ul key={index} className="py-1">
+              {popupItem.sectionTitle && (
+                <span className="text-[12px] opacity-70 py-1 pointer-events-none">
+                  {popupItem?.sectionTitle}
+                </span>
+              )}
+              {popupItem.items.map((linkItem, idx) => (
+                <li key={idx} className="py-1">
+                  <a
+                    href={linkItem.href}
+                    className="cursor-not-allowed flex gap-4 w-full"
+                    onClick={preventBubbling}
+                  >
+                    <div className="text-base">
+                      {linkItem.itemBody.itemLabel}
+                    </div>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          ))}
+        </AccordionContent>
+      </AccordionItem>
+
+      {/* RESOURCES */}
+      <AccordionItem value={"resources"}>
+        <AccordionTrigger className="text-lg font-semibold">
+          {resources.label}
+        </AccordionTrigger>
+        <AccordionContent>
+          {resources.popup.map((popupItem, index) => (
+            <ul key={index} className="py-1">
+              {popupItem.items.map((linkItem, idx) => (
+                <li key={idx} className="py-1">
+                  <a
+                    href={linkItem.href}
+                    className="cursor-not-allowed flex gap-4 w-full"
+                    onClick={preventBubbling}
+                  >
+                    <div className="text-base">
+                      {linkItem.itemBody.itemLabel}
+                    </div>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          ))}
+        </AccordionContent>
+      </AccordionItem>
+
+      {/* PRICING */}
       <AccordionItem value="pricing" asChild>
         <a
           onClick={preventBubbling}
@@ -64,6 +134,8 @@ const MobileNavMenu: React.FC = () => {
           Pricing
         </a>
       </AccordionItem>
+
+      {/* CONCTACT */}
       <AccordionItem value="contact-sales" asChild>
         <a
           onClick={preventBubbling}

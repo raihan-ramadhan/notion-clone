@@ -1,5 +1,8 @@
-import { Documents } from "@prisma/client";
+import { Document } from "@prisma/client";
 
-export type DocumentType = Pick<Documents, "publicId" | "title" | "id">;
+export type DocumentType = Pick<
+  Document,
+  "publicId" | "title" | "id" | "iconImage"
+>;
 
-export type InitialDoc = Pick<Documents, "publicId"> | null;
+export type InitialDoc = Pick<Document, "publicId"> | null;

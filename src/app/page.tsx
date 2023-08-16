@@ -4,10 +4,9 @@ import { buttonVariants } from "@/components/ui/Button";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { auth } from "@clerk/nextjs";
-import { nanoid } from "nanoid";
-import { prisma } from "@/lib/db";
+import { auth } from "@clerk/nextjs/app-beta";
 import { getInitialDoc } from "@/actions/getInitialDoc";
+import { createUntitled } from "@/actions/createUntitled";
 
 export default async function Home() {
   const { userId } = auth();
@@ -16,19 +15,14 @@ export default async function Home() {
     const document = await getInitialDoc(userId);
 
     // find first document to redirect if already logged in
-    if (document) return redirect(`/${document.publicId}`);
+    if (document) {
+      return redirect(`/${document.publicId}`);
+    } else {
+      //   if there is no doc yet make one then redirect
+      const { publicId } = await createUntitled(userId);
 
-    //   if there is no doc yet make one then redirect
-    const newId = nanoid(12);
-    await prisma.documents.create({
-      data: {
-        publicId: newId,
-        ownerId: userId,
-        title: "Untitled",
-      },
-    });
-
-    return redirect(`/${newId}`);
+      return redirect(`/${publicId}`);
+    }
   }
 
   return (

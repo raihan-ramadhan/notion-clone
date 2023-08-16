@@ -1,4 +1,4 @@
-import { UserProfile } from "@clerk/nextjs";
+import { UserProfile } from "@clerk/nextjs/app-beta/client";
 import { Dialog, DialogContentCustom, DialogTrigger } from "../ui/Dialog";
 
 interface SettingProps {

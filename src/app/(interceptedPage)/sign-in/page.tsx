@@ -3,6 +3,12 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/Button";
 import SignIn from "@/components/auth/SignIn";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Sign In",
+  description: "Sign In Notion Clone with clerk",
+};
 
 export default function Page() {
   return (

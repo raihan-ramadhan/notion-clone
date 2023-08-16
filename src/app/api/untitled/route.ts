@@ -1,24 +1,16 @@
-import { prisma } from "@/lib/db";
-import { auth } from "@clerk/nextjs";
+import { createUntitled } from "@/actions/createUntitled";
+import { auth } from "@clerk/nextjs/app-beta";
 import { NextResponse } from "next/server";
 
-export async function POST(req: Request) {
+export async function POST() {
   try {
-    const { publicId } = await req.json();
-
     const { userId } = auth();
 
     if (!userId) {
       return new Response("Unauthorized", { status: 401 });
     }
 
-    await prisma.documents.create({
-      data: {
-        publicId,
-        ownerId: userId,
-        title: "Untitled",
-      },
-    });
+    const { publicId } = await createUntitled(userId);
 
     return NextResponse.json(publicId);
   } catch (error) {

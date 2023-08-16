@@ -80,32 +80,6 @@ const DialogContentMore = React.forwardRef<
 ));
 DialogContentMore.displayName = "DialogContentMore";
 
-const DialogContentMobileSidebar = React.forwardRef<
-  React.ElementRef<typeof DialogPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
->(({ className, children, ...props }, ref) => (
-  <DialogPortal>
-    <DialogOverlay className="md:!hidden" />
-    <DialogPrimitive.Content
-      ref={ref}
-      // data-[state=open]:animate-in
-      className={cn(
-        `fixed z-50 left-0 top-0 bottom-0 w-[calc(100%_-_80px)] sm:w-[320px] md:w-0 md:!hidden max-w-lg gap-4 border bg-background shadow-[5px_0_5px] shadow-foreground/30 focus-within:outline-none !duration-200  
-        // data-[state=open]:animate-slide-from-left
-        data-[state=open]:slide-in-from-left-[100%]
-        data-[state=closed]:animate-out 
-        data-[state=closed]:slide-out-to-left-[100%] 
-        `,
-        className
-      )}
-      {...props}
-    >
-      {children}
-    </DialogPrimitive.Content>
-  </DialogPortal>
-));
-DialogContentMobileSidebar.displayName = "DialogContentMobileSidebar";
-
 const DialogContentCustom = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
@@ -190,6 +164,5 @@ export {
   DialogTitle,
   DialogDescription,
   DialogContentCustom,
-  DialogContentMobileSidebar,
   DialogContentMore,
 };

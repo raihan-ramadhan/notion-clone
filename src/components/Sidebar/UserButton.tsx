@@ -1,7 +1,9 @@
 "use client";
 
-import { useUser } from "@clerk/nextjs";
-import { UserButton as UserButtonClerk } from "@clerk/nextjs";
+import {
+  UserButton as UserButtonClerk,
+  useUser,
+} from "@clerk/nextjs/app-beta/client";
 import { Icons } from "../Icons";
 
 interface UserButtonProps {

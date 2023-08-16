@@ -12,6 +12,7 @@ import axios, { AxiosError } from "axios";
 import More from "./More";
 import { DeleteDocumentPayload } from "@/lib/validators/Documents";
 import { MouseEvent } from "react";
+import Image from "next/image";
 
 interface Redirect {
   data: string | null;
@@ -116,9 +117,22 @@ export default function Links({
               isMobile && "px-1 py-2"
             )}
           >
-            <Icons.FileText
-              className={cn("h-6 w-6 p-1 shrink-0", isMobile && "h-8 w-8")}
-            />
+            {doc.iconImage ? (
+              <Image
+                alt="icon doc"
+                src={doc.iconImage}
+                width={6}
+                height={6}
+                className={cn(
+                  "h-6 w-6 p-1 shrink-0 object-cover",
+                  isMobile && "h-8 w-8"
+                )}
+              />
+            ) : (
+              <Icons.FileText
+                className={cn("h-6 w-6 p-1 shrink-0", isMobile && "h-8 w-8")}
+              />
+            )}
             <span
               className={cn(
                 "pl-3 h-6 leading-6 text-sm truncate flex-1 select-none",

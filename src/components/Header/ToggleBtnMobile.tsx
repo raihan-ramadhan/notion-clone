@@ -2,18 +2,17 @@
 
 import { cn } from "@/lib/utils";
 import { Icons } from "../Icons";
+import { useShowMobileSidebar } from "@/hooks/use-show-mobile-sidebar";
 
-interface ToggleBtnMobileProps {
-  toggle: () => void;
-}
+const ToggleBtnMobile: React.FC = () => {
+  const { toggleMobileSidebar } = useShowMobileSidebar();
 
-const ToggleBtnMobile: React.FC<ToggleBtnMobileProps> = ({ toggle }) => {
   return (
     <div
       className={
-        "group hover:bg-accent cursor-pointer rounded-sm relative h-6 w-6 block md:hidden"
+        "group hover:bg-accent cursor-pointer rounded-sm relative h-6 w-6 block md:hidden shrink-0 mr-2"
       }
-      onClick={toggle}
+      onClick={toggleMobileSidebar}
     >
       <Icons.DoubleArrowRight
         className={cn(
