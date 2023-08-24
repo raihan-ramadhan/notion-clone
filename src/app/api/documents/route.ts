@@ -22,7 +22,10 @@ export async function GET() {
     });
 
     return NextResponse.json(docs);
-  } catch (error) {
-    return new Response("Could not fetch posts", { status: 500 });
+  } catch (error: any) {
+    return NextResponse.json(
+      { message: error.message || "Could not fetch documents" },
+      { status: 500 }
+    );
   }
 }

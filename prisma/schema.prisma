@@ -1,13 +1,14 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
 
 generator client {
   provider = "prisma-client-js"
 }
 
-datasource db {
-  provider = "mongodb"
-  url      = env("DATABASE_URL")
+generator json {
+  provider = "prisma-json-types-generator"
 }
 
 model Document {
@@ -18,6 +19,8 @@ model Document {
   ownerId    String   @db.String
   editorJson Json?    @db.Json
   title      String   @db.String
-  iconImage  String?  @db.String
-  coverImage String?  @db.String
+  /// [ImageType]
+  iconImage  Json?
+  /// [ImageType]
+  coverImage Json?
 }

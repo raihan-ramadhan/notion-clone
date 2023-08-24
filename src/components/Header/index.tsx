@@ -1,8 +1,8 @@
-import Image from "next/image";
 import ToggleBtnDekstop from "./ToggleBtnDekstop";
 import ToggleBtnMobile from "./ToggleBtnMobile";
 import { Document } from "@prisma/client";
 import { formatTimeToNow } from "@/lib/utils";
+import Image from "next/image";
 
 interface HeaderProps {
   doc: Document;
@@ -23,7 +23,7 @@ const Header: React.FC<HeaderProps> = ({ doc }) => {
               height={24}
               width={24}
               alt="icon image"
-              src={iconImage}
+              src={`${iconImage.url}?timeStamp=${iconImage.timeStamp}`}
               className="object-cover w-4 h-4 overflow-hidden shrink-0"
             />
           )}

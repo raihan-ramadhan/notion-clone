@@ -5,7 +5,7 @@ import Sidebar from "./Sidebar";
 import MobileSidebar from "./Sidebar/MobileSidebar";
 
 import { cn } from "@/lib/utils";
-import { toast } from "@/hooks/use-toast";
+import { toast, toastError } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { DocumentType } from "@/types/db";
 import { useShowSidebar } from "@/store/use-show-sidebar";
@@ -62,12 +62,8 @@ export default function ReactResizablePanels({
 
       return newDoc;
     },
-    onError: () => {
-      return toast({
-        title: "Something went wrong",
-        description: "Failed make a new page",
-        variant: "destructive",
-      });
+    onError: (error: any) => {
+      return toastError({ error, title: "Failed make a new document" });
     },
     onSuccess: (newDoc) => {
       queryClient.invalidateQueries({ queryKey: ["docs"] });

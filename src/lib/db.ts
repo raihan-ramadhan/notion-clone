@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import "server-only";
 import { PrismaClient } from "@prisma/client";
 import { env } from "@/env.mjs";
@@ -12,3 +13,12 @@ export const prisma =
   });
 
 if (env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
+
+declare global {
+  namespace PrismaJson {
+    type ImageType = {
+      url: string;
+      timeStamp: string;
+    };
+  }
+}

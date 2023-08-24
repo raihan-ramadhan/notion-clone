@@ -6,7 +6,7 @@ import { useParams, useRouter } from "next/navigation";
 import { type DocumentType } from "../../types/db";
 import { Icons } from "../Icons";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "@/hooks/use-toast";
+import { toast, toastError } from "@/hooks/use-toast";
 import axios, { AxiosError } from "axios";
 
 import More from "./More";
@@ -50,9 +50,8 @@ export default function Links({
       if (callback) callback();
 
       const payload: DeleteDocumentPayload = {
-        publicId,
-        id,
         currentDoc,
+        id,
       };
 
       const { data: redirect }: Redirect = await axios.delete(
@@ -62,22 +61,18 @@ export default function Links({
 
       return redirect;
     },
-    onError: (err) => {
-      if (err instanceof AxiosError) {
-        if (err.response?.status === 422) {
-          return toast({
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 422) {
+          toastError({
             title: "Invalid payload axios.",
-            description: "Please provide publicId, currentDoc, and id",
-            variant: "destructive",
+            axiosPayloadDesc: "Please provide publicId, currentDoc, and id",
+            error,
           });
+          return;
         }
       }
-
-      return toast({
-        title: "Something went wrong",
-        description: `Failed delete a page`,
-        variant: "destructive",
-      });
+      toastError({ error, title: "Failed delete" });
     },
     onSuccess: (redirect) => {
       queryClient.invalidateQueries({ queryKey: ["docs"] });
@@ -120,7 +115,7 @@ export default function Links({
             {doc.iconImage ? (
               <Image
                 alt="icon doc"
-                src={doc.iconImage}
+                src={`${doc.iconImage.url}?timeStamp=${doc.iconImage.timeStamp}`}
                 width={6}
                 height={6}
                 className={cn(

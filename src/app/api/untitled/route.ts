@@ -12,8 +12,14 @@ export async function POST() {
 
     const { publicId } = await createUntitled(userId);
 
-    return NextResponse.json(publicId);
-  } catch (error) {
-    return new Response("Could not fetch posts", { status: 500 });
+    return NextResponse.json(publicId, { status: 201 });
+  } catch (error: any) {
+    return NextResponse.json(
+      {
+        message:
+          error.message || "Something went wrong when create untiled document",
+      },
+      { status: 500 }
+    );
   }
 }

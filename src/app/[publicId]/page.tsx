@@ -1,11 +1,12 @@
 import { findDoc } from "@/actions/findDoc";
 import Header from "@/components/Header";
-import CoverImageBtn from "@/components/Main/CoverImageBtn";
-import IconImageBtn from "@/components/Main/IconImageBtn";
+import CoverImgUploadBtn from "@/components/Main/CoverImgUploadBtn";
+import CoverImage from "@/components/Main/coverImage";
+import IconImgUploadBtn from "@/components/Main/IconImgUploadBtn";
 import { cn } from "@/lib/utils";
 import { Metadata, ResolvingMetadata } from "next";
-import Image from "next/image";
 import { notFound } from "next/navigation";
+import IconImage from "@/components/Main/IconImage";
 
 interface ParamsProps {
   params: { publicId: string };
@@ -16,29 +17,20 @@ const Page: React.FC<ParamsProps> = async ({ params: { publicId } }) => {
 
   if (!doc) return notFound();
 
-  const { title, coverImage, iconImage } = doc;
+  const { title, coverImage, iconImage, id } = doc;
 
   return (
     <>
       <Header doc={doc} />
       <main className="overflow-y-auto h-[calc(100vh_-_48px)] overflow-hidden">
-        {coverImage ? (
-          <div className="h-[280px] w-full relative">
-            <Image
-              src={coverImage}
-              className="object-cover object-left-bottom z-0"
-              alt="cover image"
-              quality={95}
-              priority
-              fill
-            />
-          </div>
-        ) : null}
+        {coverImage && (
+          <CoverImage coverImage={coverImage} id={id} publicId={publicId} />
+        )}
 
         <section className="relative max-w-[900px] mx-auto px-24">
           <div
             className={cn(
-              "group",
+              "group flex flex-col",
               iconImage && coverImage && "pt-[70px]",
               !iconImage && coverImage && "pt-[25px]",
               iconImage && !coverImage && "pt-16",
@@ -46,31 +38,28 @@ const Page: React.FC<ParamsProps> = async ({ params: { publicId } }) => {
             )}
           >
             {iconImage && (
-              <Image
-                className={cn(
-                  "w-[125px] h-[125px] object-cover",
-                  coverImage && "absolute z-10 left-24 top-0 -translate-y-1/2 "
-                )}
-                alt="icons image"
-                src={iconImage}
-                quality={95}
-                height={125}
-                width={125}
-                priority
+              <IconImage
+                id={id}
+                publicId={publicId}
+                isCoverImage={!!coverImage}
+                iconImage={iconImage}
               />
             )}
 
             {!(iconImage && coverImage) && (
-              <div className="h-6 inline-flex gap-2 pt-5">
-                {!iconImage && <IconImageBtn />}
-                {!coverImage && <CoverImageBtn />}
+              <div className="h-6 inline-flex gap-2 mt-5">
+                {!iconImage && <IconImgUploadBtn publicId={publicId} id={id} />}
+                {!coverImage && (
+                  <CoverImgUploadBtn publicId={publicId} id={id} />
+                )}
               </div>
             )}
 
-            <h2 className="focus:outline-none text-4xl font-semibold py-5">
+            <h2 className="focus:outline-none text-4xl font-semibold py-5 ">
               {title}
             </h2>
           </div>
+
           <p>
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum
             earum exercitationem porro rerum nostrum itaque maxime fugit nulla
@@ -114,7 +103,7 @@ export async function generateMetadata(
         {
           type: "image/x-icon",
           sizes: "any",
-          url: document?.iconImage ?? "/favicon.ico",
+          url: document?.iconImage?.url ?? "/favicon.ico",
         },
       ],
     },

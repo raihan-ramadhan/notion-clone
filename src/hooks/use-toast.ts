@@ -167,6 +167,27 @@ function toast({ ...props }: Toast) {
   };
 }
 
+interface ToastErrorProps {
+  error: any;
+  description?: string;
+  axiosPayloadDesc?: string;
+  title?: string;
+}
+
+const toastError: React.FC<ToastErrorProps> = ({
+  error,
+  description,
+  title,
+  axiosPayloadDesc,
+}): any => {
+  return toast({
+    // prettier-ignore
+    description: axiosPayloadDesc || error.response?.data?.message || error.message || description || "Something went wrong",
+    title: title || "Something went wrong",
+    variant: "destructive",
+  });
+};
+
 function useToast() {
   const [state, setState] = React.useState<State>(memoryState);
 
@@ -187,4 +208,4 @@ function useToast() {
   };
 }
 
-export { useToast, toast };
+export { useToast, toast, toastError };

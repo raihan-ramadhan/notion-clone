@@ -10,6 +10,9 @@ export async function createUntitled(ownerId: string) {
       publicId: newId,
       title: "Untitled",
     },
+    select: {
+      publicId: true,
+    },
   });
 
   return newPage;

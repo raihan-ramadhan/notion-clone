@@ -15,6 +15,9 @@ import {
   FileTextIcon,
   TrashIcon,
   DotsHorizontalIcon,
+  ImageIcon,
+  CameraIcon,
+  UpdateIcon,
 } from "@radix-ui/react-icons";
 
 export type IconsProps = {
@@ -39,6 +42,9 @@ export const Icons = {
   Plus: PlusIcon,
   Delete: TrashIcon,
   DotsHorizontalIcon: DotsHorizontalIcon,
+  Image: ImageIcon,
+  Camera: CameraIcon,
+  Update: UpdateIcon,
   logo: () => (
     <svg
       className="h-8 w-24 fill-black dark:fill-white"
@@ -111,6 +117,22 @@ export const Icons = {
           d="M22.4788 14.3734C23.8788 14.0234 23.8788 13.4459 22.4788 13.0959L19.3813 12.3259C17.9813 11.9759 16.5463 10.5409 16.1963 9.14091L15.4263 6.04341C15.0763 4.64341 14.4988 4.64341 14.1488 6.04341L13.3788 9.14091C13.0288 10.5409 11.5938 11.9759 10.1938 12.3259L7.09631 13.0959C5.69631 13.4459 5.69631 14.0234 7.09631 14.3734L10.1938 15.1434C11.5938 15.4934 13.0288 16.9284 13.3788 18.3284L14.1488 21.4259C14.4988 22.8259 15.0763 22.8259 15.4263 21.4259L16.1963 18.3284C16.5463 16.9284 17.9813 15.4934 19.3813 15.1434L22.4788 14.3734Z"
         ></path>
       </g>
+    </svg>
+  ),
+  loader: ({ className }: IconsProps) => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="3"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={cn("w-6 h-6", className)}
+    >
+      <path d="M21 12a9 9 0 1 1-6.219-8.56" />
     </svg>
   ),
 };
