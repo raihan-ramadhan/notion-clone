@@ -3,8 +3,11 @@ import Header from "@/components/Header";
 import Output from "@/components/Editor/Output";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
-import { notFound } from "next/navigation";
+import { notFound,redirect } from "next/navigation";
 import { ScrollArea } from "@/components/ui/ScrollArea";
+import { Metadata, ResolvingMetadata } from "next";
+import { auth } from "@clerk/nextjs";
+import { getIsOwner } from "@/actions/getIsOwner";
 
 interface ParamsProps {
   params: { publicId: string };
@@ -78,3 +81,44 @@ const Page: React.FC<ParamsProps> = async ({ params: { publicId } }) => {
 };
 
 export default Page;
+
+export async function generateMetadata(
+  { params: { publicId } }: ParamsProps,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  // fetch data
+  const document = await findDoc(publicId);
+
+  const { userId } = auth();
+
+  if (!userId) {
+    return redirect(`/$sign-in`);
+  }
+
+  const isOwner = await getIsOwner(publicId, userId);
+
+  // optionally access and extend (rather than replace) parent metadata
+  const previousImages = (await parent).openGraph?.images || [];
+
+  return {
+    title: !document
+      ? "Not Found"
+      : !isOwner
+      ? "Forbidden"
+      : document.title || "Untitled",
+    openGraph: {
+      images: [...previousImages],
+    },
+    icons: {
+      icon: [
+        {
+          type: "image/x-icon",
+          sizes: "any",
+          url: !isOwner
+            ? "/favicon.ico"
+            : document?.iconImage?.url ?? "/favicon.ico",
+        },
+      ],
+    },
+  };
+}
