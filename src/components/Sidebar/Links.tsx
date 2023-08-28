@@ -13,6 +13,7 @@ import More from "./More";
 import { DeleteDocumentPayload } from "@/lib/validators/Documents";
 import { MouseEvent } from "react";
 import Image from "next/image";
+import { useTitle } from "@/store/use-title";
 
 interface Redirect {
   data: string | null;
@@ -42,6 +43,8 @@ export default function Links({
   const params = useParams();
   const router = useRouter();
   const queryClient = useQueryClient();
+
+  const { title } = useTitle();
 
   const currentDoc = params.publicId;
 
@@ -99,48 +102,55 @@ export default function Links({
 
   return (
     <>
-      {docs.map((doc) => (
-        <li key={doc.publicId}>
-          <Link
-            tabIndex={0}
-            href={`/${doc.publicId}`}
-            onClick={(e) => handleClick(e, doc.publicId)}
-            className={cn(
-              "flex hover:bg-accent w-full items-center px-2 py-[2px] cursor-pointer rounded-sm transition-colors duration-200 overflow-x-hidden focus:outline-none focus-visible:ring-1 focus-visible:ring-ring",
-              currentDoc == doc.publicId && size != "medium" && "bg-accent",
-              size == "medium" && "px-4 py-3 rounded-none",
-              isMobile && "px-1 py-2"
-            )}
-          >
-            {doc.iconImage ? (
-              <Image
-                alt="icon doc"
-                src={`${doc.iconImage.url}?timeStamp=${doc.iconImage.timeStamp}`}
-                width={6}
-                height={6}
-                className={cn(
-                  "h-6 w-6 p-1 shrink-0 object-cover",
-                  isMobile && "h-8 w-8"
-                )}
-              />
-            ) : (
-              <Icons.FileText
-                className={cn("h-6 w-6 p-1 shrink-0", isMobile && "h-8 w-8")}
-              />
-            )}
-            <span
+      {docs.map((doc) => {
+        const linkTitle =
+          (currentDoc == doc.publicId ? title : doc.title) || "Untitled";
+
+        return (
+          <li key={doc.publicId}>
+            <Link
+              tabIndex={0}
+              href={`/${doc.publicId}`}
+              onClick={(e) => handleClick(e, doc.publicId)}
               className={cn(
-                "pl-3 h-6 leading-6 text-sm truncate flex-1 select-none",
-                isMobile && "text-base"
+                "flex hover:bg-accent w-full items-center px-2 py-[2px] cursor-pointer rounded-sm transition-colors duration-200 overflow-x-hidden focus:outline-none focus-visible:ring-1 focus-visible:ring-ring",
+                currentDoc == doc.publicId && size != "medium" && "bg-accent",
+                size == "medium" && "px-4 py-3 rounded-none",
+                isMobile && "px-1 py-2"
               )}
             >
-              {doc.title}
-            </span>
+              {doc.iconImage ? (
+                <Image
+                  alt="icon doc"
+                  src={`${doc.iconImage.url}?timeStamp=${doc.iconImage.timeStamp}`}
+                  width={6}
+                  height={6}
+                  className={cn(
+                    "h-6 w-6 p-1 shrink-0 object-cover",
+                    isMobile && "h-8 w-8"
+                  )}
+                />
+              ) : (
+                <Icons.FileText
+                  className={cn("h-6 w-6 p-1 shrink-0", isMobile && "h-8 w-8")}
+                />
+              )}
+              <span
+                className={cn(
+                  "pl-3 h-6 leading-6 text-sm truncate flex-1 select-none",
+                  isMobile && "text-base"
+                )}
+              >
+                {linkTitle}
+              </span>
 
-            {showMore && <More doc={doc} mutate={mutate} isMobile={isMobile} />}
-          </Link>
-        </li>
-      ))}
+              {showMore && (
+                <More doc={doc} mutate={mutate} isMobile={isMobile} />
+              )}
+            </Link>
+          </li>
+        );
+      })}
     </>
   );
 }

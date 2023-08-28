@@ -44,7 +44,7 @@ const MobileSidebar: React.FC<MobileSidebarProps> = ({
         <nav aria-label="Sidebar" className="flex flex-col h-screen">
           <UserButton onClick={toggle} />
 
-          <div className="p-1">
+          <div className="py-1 px-3">
             <Search docs={docs}>
               <div>
                 <SidebarMenuItem isMobile iconName="Search" text="Search" />

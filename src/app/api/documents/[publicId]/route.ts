@@ -3,7 +3,10 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { getInitialDoc } from "@/actions/getInitialDoc";
 import { z } from "zod";
-import { DocumentDeleteValidator } from "@/lib/validators/Documents";
+import {
+  DocumentDeleteValidator,
+  DocumentUpdateValidator,
+} from "@/lib/validators/Documents";
 import { createUntitled } from "@/actions/createUntitled";
 import { deleteImg } from "@/actions/deleteImg";
 import {
@@ -68,6 +71,48 @@ export async function DELETE(req: Request, context: Context) {
     return NextResponse.json(
       {
         message: error.message || "Something went wrong when delete a document",
+      },
+      { status: 500 }
+    );
+  }
+}
+
+export async function PATCH(req: Request, context: Context) {
+  try {
+    const { userId } = auth();
+
+    if (!userId) {
+      return new Response("Unauthorized", { status: 401 });
+    }
+
+    // Validate the route params.
+    const {
+      params: { publicId },
+    } = routeContextSchema.parse(context);
+
+    const isOwner = await getIsOwner(publicId, userId);
+
+    if (!isOwner) {
+      return new Response("Forbidden", { status: 403 });
+    }
+
+    const body = await req.json();
+    const { editorJson, id } = DocumentUpdateValidator.parse(body);
+
+    await prisma.document.update({
+      where: { id, publicId },
+      data: { editorJson },
+    });
+
+    return NextResponse.json("Edited", { status: 200 });
+  } catch (error: any) {
+    if (error instanceof z.ZodError) {
+      return new Response(error.message, { status: 422 });
+    }
+
+    return NextResponse.json(
+      {
+        message: error.message || "Something went wrong when update a document",
       },
       { status: 500 }
     );

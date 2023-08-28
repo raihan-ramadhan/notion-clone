@@ -2,6 +2,48 @@
 @tailwind components;
 @tailwind utilities;
 
+.ProseMirror .is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: #adb5bd;
+  pointer-events: none;
+  height: 0;
+}
+.ProseMirror .is-empty::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: #adb5bd;
+  pointer-events: none;
+  height: 0;
+}
+
+ul[data-type="taskList"] {
+  @apply list-none p-0;
+  @apply [&_p]:m-0;
+  @apply [&_li]:flex [&_li]:items-center [&_li]:m-0 [&_li]:h-10;
+  @apply [&_li>label]:flex-[0_0_auto] [&_li>label]:w-5 [&_li>label]:h-5 [&_li>label]:items-center [&_li>label]:mr-[0.5rem] [&_li>label]:select-none [&_li>label]:m-0;
+  @apply [&_li>div]:flex [&_li>div]:m-0;
+  @apply [&_ul_li]:list-item [&_ol_li]:list-item;
+}
+
+ul[data-type="taskList"] li input {
+  @apply appearance-none w-5 h-5 cursor-pointer bg-background;
+}
+ul[data-type="taskList"] li[data-checked="false"] input {
+  @apply border-2 border-accent-foreground;
+}
+
+ul[data-type="taskList"] li[data-checked="true"] input {
+  @apply bg-accent-foreground relative;
+}
+ul[data-type="taskList"] li[data-checked="true"] input::after {
+  @apply text-primary-foreground font-bold absolute -top-[6px] left-[3px] scale-75 content-['\002714'];
+}
+
+ul[data-type="taskList"] li[data-checked="true"] div p {
+  @apply line-through text-primary/50;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

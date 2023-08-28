@@ -105,7 +105,7 @@ const CoverImage: React.FC<CoverImageProps> = ({
   };
 
   return (
-    <div className="h-[280px] w-full relative group">
+    <div className="h-[200px] md:h-[280px] w-full relative group shrink-0">
       <Image
         src={`${coverImage?.url}?timeStamp=${coverImage?.timeStamp}`}
         className="object-cover md:object-left z-0 bg-accent"
@@ -133,7 +133,7 @@ const CoverImage: React.FC<CoverImageProps> = ({
         </div>
       </div>
 
-      <div className="absolute inset-0 w-full h-full max-w-[900px] mx-auto px-24">
+      <div className="absolute inset-0 w-full h-full max-w-[900px] mx-auto px-10 md:px-24">
         {!isLoading ? (
           <Menu
             isDeleting={isDeleting}

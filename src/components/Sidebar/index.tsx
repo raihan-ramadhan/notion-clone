@@ -20,7 +20,7 @@ const Sidebar: React.FC<Sidebar> = ({ toggleSidebar, addDoc, query }) => {
     <aside>
       <nav aria-label="Sidebar" className="flex flex-col h-screen">
         <UserButton onClick={toggleSidebar} />
-        <div className="p-1 shrink-0">
+        <div className="p-1 shrink-0 px-3">
           <Search docs={docs}>
             <div>
               <SidebarMenuItem iconName="Search" text="Search" />

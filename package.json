@@ -25,6 +25,14 @@
     "@tailwindcss/typography": "^0.5.9",
     "@tanstack/react-query": "^5.0.0-beta.0",
     "@tanstack/react-query-devtools": "^5.0.0-beta.0",
+    "@tiptap/extension-heading": "^2.1.7",
+    "@tiptap/extension-placeholder": "^2.1.7",
+    "@tiptap/extension-task-item": "^2.1.7",
+    "@tiptap/extension-task-list": "^2.1.7",
+    "@tiptap/pm": "^2.1.7",
+    "@tiptap/react": "^2.1.7",
+    "@tiptap/starter-kit": "^2.1.7",
+    "@tiptap/suggestion": "^2.1.7",
     "@types/node": "20.4.3",
     "@types/react": "18.2.15",
     "@types/react-dom": "18.2.7",
@@ -42,17 +50,20 @@
     "postcss": "8.4.27",
     "prisma-json-types-generator": "^2.5.0",
     "react": "18.2.0",
+    "react-copy-to-clipboard": "^5.1.0",
     "react-dom": "18.2.0",
     "react-resizable-panels": "^0.0.54",
     "tailwind-merge": "^1.14.0",
     "tailwindcss": "3.3.3",
     "tailwindcss-animate": "^1.0.6",
     "typescript": "5.1.6",
+    "use-debounce": "^9.0.4",
     "zod": "^3.21.4",
     "zustand": "^4.4.1"
   },
   "devDependencies": {
     "@tanstack/eslint-plugin-query": "^4.29.25",
+    "@types/react-copy-to-clipboard": "^5.0.4",
     "prisma": "^5.0.0"
   }
 }

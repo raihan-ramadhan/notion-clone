@@ -5,8 +5,14 @@ import CoverImage from "@/components/Main/coverImage";
 import IconImgUploadBtn from "@/components/Main/IconImgUploadBtn";
 import { cn } from "@/lib/utils";
 import { Metadata, ResolvingMetadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import IconImage from "@/components/Main/IconImage";
+import Editor from "@/components/Editor";
+import { getIsOwner } from "@/actions/getIsOwner";
+import { auth } from "@clerk/nextjs";
+import Forbidden from "@/components/Main/Forbidden";
+import Title from "@/components/Main/Title";
+import { ScrollArea } from "@/components/ui/ScrollArea";
 
 interface ParamsProps {
   params: { publicId: string };
@@ -17,66 +23,67 @@ const Page: React.FC<ParamsProps> = async ({ params: { publicId } }) => {
 
   if (!doc) return notFound();
 
-  const { title, coverImage, iconImage, id } = doc;
+  const { userId } = auth();
+
+  if (!userId) {
+    return redirect(`/$sign-in`);
+  }
+
+  const isOwner = await getIsOwner(publicId, userId);
+
+  if (!isOwner) {
+    return <Forbidden />;
+  }
+
+  const { title, coverImage, iconImage, id, editorJson } = doc;
 
   return (
     <>
       <Header doc={doc} />
-      <main className="overflow-y-auto h-[calc(100vh_-_48px)] overflow-hidden">
-        {coverImage && (
-          <CoverImage coverImage={coverImage} id={id} publicId={publicId} />
-        )}
 
-        <section className="relative max-w-[900px] mx-auto px-24">
-          <div
-            className={cn(
-              "group flex flex-col",
-              iconImage && coverImage && "pt-[70px]",
-              !iconImage && coverImage && "pt-[25px]",
-              iconImage && !coverImage && "pt-16",
-              !iconImage && !coverImage && "pt-10"
-            )}
-          >
-            {iconImage && (
-              <IconImage
-                id={id}
-                publicId={publicId}
-                isCoverImage={!!coverImage}
-                iconImage={iconImage}
-              />
-            )}
+      <ScrollArea className="h-[calc(100vh_-_48px)]" type="always">
+        <main className="flex flex-col h-[inherit]">
+          {coverImage && (
+            <CoverImage coverImage={coverImage} id={id} publicId={publicId} />
+          )}
 
-            {!(iconImage && coverImage) && (
-              <div className="h-6 inline-flex gap-2 mt-5">
-                {!iconImage && <IconImgUploadBtn publicId={publicId} id={id} />}
-                {!coverImage && (
-                  <CoverImgUploadBtn publicId={publicId} id={id} />
-                )}
-              </div>
-            )}
+          <section className="flex flex-col flex-1 w-full">
+            <div
+              className={cn(
+                "group flex flex-col shrink-0 px-10 md:px-24 w-full max-w-[900px] mx-auto relative",
+                iconImage && coverImage && "pt-[70px]",
+                !iconImage && coverImage && "pt-[25px]",
+                iconImage && !coverImage && "pt-16",
+                !iconImage && !coverImage && "pt-10"
+              )}
+            >
+              {iconImage && (
+                <IconImage
+                  id={id}
+                  publicId={publicId}
+                  isCoverImage={!!coverImage}
+                  iconImage={iconImage}
+                />
+              )}
 
-            <h2 className="focus:outline-none text-4xl font-semibold py-5 ">
-              {title}
-            </h2>
-          </div>
+              {!(iconImage && coverImage) && (
+                <div className="h-6 inline-flex gap-2 mt-5">
+                  {!iconImage && (
+                    <IconImgUploadBtn publicId={publicId} id={id} />
+                  )}
+                  {!coverImage && (
+                    <CoverImgUploadBtn publicId={publicId} id={id} />
+                  )}
+                </div>
+              )}
 
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum
-            earum exercitationem porro rerum nostrum itaque maxime fugit nulla
-            laudantium veritatis repellat, doloribus perspiciatis deleniti quis
-            dolorum quasi similique minima officiis impedit commodi? Nesciunt
-            nulla maxime pariatur fugit recusandae inventore delectus
-            reprehenderit modi, accusantium autem, voluptates asperiores
-            maiores, illo animi nemo repellat? Illum dignissimos aut corrupti
-            quisquam quos consequuntur dolore recusandae accusantium molestias,
-            error maxime mollitia voluptas facilis consequatur veritatis
-            voluptatibus id impedit dolor explicabo ducimus asperiores. Nam,
-            tempore velit aliquid, non error incidunt dolor, in blanditiis et
-            ducimus atque. Eligendi facere maiores accusamus ut reprehenderit
-            iure quia veniam deserunt ratione.
-          </p>
-        </section>
-      </main>
+              <Title currentTitle={title} publicId={publicId} id={id} />
+            </div>
+
+            <Editor id={id} editorJson={editorJson} publicId={publicId} />
+          </section>
+        </main>
+      </ScrollArea>
     </>
   );
 };
@@ -90,11 +97,23 @@ export async function generateMetadata(
   // fetch data
   const document = await findDoc(publicId);
 
+  const { userId } = auth();
+
+  if (!userId) {
+    return redirect(`/$sign-in`);
+  }
+
+  const isOwner = await getIsOwner(publicId, userId);
+
   // optionally access and extend (rather than replace) parent metadata
   const previousImages = (await parent).openGraph?.images || [];
 
   return {
-    title: document?.title ?? "Not Found",
+    title: !document
+      ? "Not Found"
+      : !isOwner
+      ? "Forbidden"
+      : document.title || "Untitled",
     openGraph: {
       images: [...previousImages],
     },
@@ -103,7 +122,9 @@ export async function generateMetadata(
         {
           type: "image/x-icon",
           sizes: "any",
-          url: document?.iconImage?.url ?? "/favicon.ico",
+          url: !isOwner
+            ? "/favicon.ico"
+            : document?.iconImage?.url ?? "/favicon.ico",
         },
       ],
     },

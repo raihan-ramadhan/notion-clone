@@ -63,12 +63,24 @@ const MoreDialog: React.FC<MoreDialogProps> = ({
           </button>
         </DialogHeader>
         <button
-          className="flex hover:bg-accent w-full items-center px-3 py-2 cursor-pointer rounded-sm"
+          className="flex hover:bg-accent w-full items-center px-3 py-2 cursor-pointer"
           type="button"
           onClick={() => onDelete(doc)}
+          disabled={isLoading}
         >
-          <Icons.Delete className="h-8 w-8 p-1 shrink-0" />
-          <span className="pl-3 text-base w-max">Delete</span>
+          {isLoading ? (
+            <>
+              <div className="h-8 w-8 flex justify-center items-center">
+                <Icons.loader className="h-6 w-6 p-1 shrink-0 animate-spin opacity-60" />
+              </div>
+              <span className="pl-3 text-base w-max opacity-60">Deleting</span>
+            </>
+          ) : (
+            <>
+              <Icons.Delete className="h-8 w-8 p-1 shrink-0" />
+              <span className="pl-3 text-base w-max">Delete</span>
+            </>
+          )}
         </button>
       </DialogContentMore>
     </Dialog>

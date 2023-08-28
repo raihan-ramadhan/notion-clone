@@ -27,11 +27,11 @@ const LinksDoc: React.FC<LinksDocProps> = ({
 }) => {
   return (
     <ScrollArea
-      className="flex-1 w-full"
+      className="flex-1 w-full px-2"
       viewportClassName="[&>div]:!block"
       type="auto"
     >
-      <ul className="p-1 h-full space-y-[2px] pb-20">
+      <ul className="p-1 h-full space-y-1 pb-20">
         {status == "success" ? (
           <>
             <Links docs={docs} isMobile={isMobile} toggle={toggle} showMore />
@@ -66,8 +66,11 @@ const LinksDoc: React.FC<LinksDocProps> = ({
             </Button>
           </div>
         ) : (
-          <div className="px-4 py-2 rounded-sm text-sm animate-pulse bg-foreground/10">
-            Loading
+          // prettier-ignore
+          <div className="animate-pulse space-y-1 [&>div]:h-12 [&>div]:md:h-7 [&>div]:rounded-sm [&>div]:bg-accent">
+            <div  /><div  /><div  /><div  /><div  /><div  /><div  /><div  /><div  /><div  /><div  />
+            <div  /><div  /><div  /><div  /><div  /><div  /><div  /><div  /><div  /><div  /><div  />
+            <div  /><div  /><div  /><div  /><div  /><div  /><div  /><div  /><div  /><div  /><div  />
           </div>
         )}
       </ul>

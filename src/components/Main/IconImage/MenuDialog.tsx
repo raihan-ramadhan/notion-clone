@@ -41,7 +41,8 @@ const MenuDialog: React.FC<MoreDialogProps> = ({
       <DialogTrigger
         className={cn(
           "block md:hidden md:!pointer-events-none outline-none focus-visible:shadow-lg focus-visible:shadow-foreground/30 w-max",
-          isCoverImage && "absolute z-10 left-24 top-0 -translate-y-1/2"
+          isCoverImage &&
+            "absolute z-10 left-10 md:left-24 top-0 -translate-y-1/2"
         )}
       >
         {children}

@@ -5,6 +5,7 @@ import { ClerkProvider } from "@clerk/nextjs/app-beta";
 import Providers from "@/components/Providers";
 import { clerkProviderConfig } from "@/config/clerk";
 import { Toaster } from "@/components/ui/Toaster";
+import { cookies } from "next/headers";
 
 const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
@@ -16,6 +17,14 @@ export const metadata: Metadata = {
   ],
 };
 
+function getShowSidebar() {
+  const layout = cookies().get("showSidebar:isShow");
+  if (layout) {
+    return JSON.parse(layout.value);
+  }
+  return true;
+}
+
 export default function RootLayout({
   children,
   auth,
@@ -23,12 +32,13 @@ export default function RootLayout({
   children: React.ReactNode;
   auth: React.ReactNode;
 }) {
+  const showSidebar = getShowSidebar();
   return (
     <ClerkProvider {...clerkProviderConfig}>
       <html lang="en" suppressHydrationWarning>
         <head />
         <body className={inter.className}>
-          <Providers>
+          <Providers showSidebar={showSidebar}>
             {auth}
             {children}
             <Toaster />

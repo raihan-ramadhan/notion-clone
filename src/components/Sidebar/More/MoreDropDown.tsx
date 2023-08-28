@@ -19,7 +19,6 @@ import {
 import { cn, preventBubbling } from "@/lib/utils";
 import { Icons } from "@/components/Icons";
 import { DocumentType } from "@/types/db";
-import { ReloadIcon } from "@radix-ui/react-icons";
 
 interface MoreDropDownprops {
   // eslint-disable-next-line no-unused-vars
@@ -60,7 +59,12 @@ const MoreDropDown: React.FC<MoreDropDownprops> = ({
             />
           </button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="start" onClick={preventBubbling}>
+        <DropdownMenuContent
+          align="center"
+          side="right"
+          sideOffset={10}
+          onClick={preventBubbling}
+        >
           <AlertDialogTrigger>
             <DropdownMenuItem className="text-start min-w-[150px] cursor-pointer flex items-center">
               <Icons.Delete className="w-5 h-5" />
@@ -99,7 +103,8 @@ const MoreDropDown: React.FC<MoreDropDownprops> = ({
           >
             {isLoading ? (
               <span className="inline-flex items-center gap-2">
-                <ReloadIcon className="w-4 h-4 p-[2px] animate-spin" /> Deleting
+                <Icons.loader className="w-4 h-4 p-[2px] animate-spin" />
+                Deleting
               </span>
             ) : (
               <span>Delete</span>

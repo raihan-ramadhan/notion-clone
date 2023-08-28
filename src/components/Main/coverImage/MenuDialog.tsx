@@ -39,7 +39,7 @@ const MenuDialog: React.FC<MoreDialogProps> = ({
         <Button
           type="button"
           className={cn(
-            "cursor-pointer text-primary/70 text-xs px-2 bg-background h-[26px] absolute bottom-2 right-24 block md:hidden",
+            "cursor-pointer text-primary/70 text-xs px-2 bg-background h-[26px] absolute bottom-2 right-10 block md:hidden",
             isLoading && "!hidden"
           )}
           variant={"ghost"}

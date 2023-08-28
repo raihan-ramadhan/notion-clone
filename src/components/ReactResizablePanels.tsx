@@ -8,7 +8,6 @@ import { cn } from "@/lib/utils";
 import { toast, toastError } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { DocumentType } from "@/types/db";
-import { useShowSidebar } from "@/store/use-show-sidebar";
 import { useEffect, useRef } from "react";
 import { useShowMobileSidebar } from "@/hooks/use-show-mobile-sidebar";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -19,6 +18,7 @@ import {
   PanelResizeHandle,
   ImperativePanelHandle,
 } from "react-resizable-panels";
+import { useShowSidebarContext } from "@/lib/context/show-sidebar-context";
 
 interface Data {
   data: DocumentType[] | undefined;
@@ -43,7 +43,7 @@ export default function ReactResizablePanels({
   right: React.ReactNode;
 }) {
   const { showMobileSidebar, toggleMobileSidebar } = useShowMobileSidebar();
-  const { showDekstopSidebar, toggleDekstopSidebar } = useShowSidebar();
+
   const onLayout = (sizes: number[]) => {
     document.cookie = `react-resizable-panels:layout=${JSON.stringify(sizes)}`;
   };
@@ -77,19 +77,22 @@ export default function ReactResizablePanels({
     },
   });
 
+  const showSidebar = useShowSidebarContext((s) => s.showSidebar);
+  const toggleSidebar = useShowSidebarContext((s) => s.toggleSidebar);
+
   useEffect(() => {
     const panel = ref.current;
     if (panel) {
-      showDekstopSidebar ? panel.collapse() : panel.expand();
+      showSidebar ? panel.collapse() : panel.expand();
     }
-  }, [showDekstopSidebar]);
+  }, [showSidebar]);
 
   return (
     <PanelGroup direction="horizontal" onLayout={onLayout}>
       <Panel
         className={cn(
           "bg-secondary/50 max-w-[480px]",
-          showDekstopSidebar && "min-w-[220px]",
+          showSidebar && "min-w-[220px]",
           "hidden md:block"
         )}
         defaultSize={defaultLayout[0]}
@@ -97,16 +100,12 @@ export default function ReactResizablePanels({
         collapsible
         ref={ref}
       >
-        <Sidebar
-          toggleSidebar={toggleDekstopSidebar}
-          addDoc={addDoc}
-          query={query}
-        />
+        <Sidebar toggleSidebar={toggleSidebar} addDoc={addDoc} query={query} />
       </Panel>
       <PanelResizeHandle
         className={cn(
           "w-[3px] bg-accent hover:bg-border",
-          !showDekstopSidebar && "pointer-events-none",
+          !showSidebar && "pointer-events-none",
           "!hidden md:!block"
         )}
       />
