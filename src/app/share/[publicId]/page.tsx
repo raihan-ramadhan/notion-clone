@@ -3,11 +3,9 @@ import Header from "@/components/Header";
 import Output from "@/components/Editor/Output";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
-import { notFound,redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import { ScrollArea } from "@/components/ui/ScrollArea";
 import { Metadata, ResolvingMetadata } from "next";
-import { auth } from "@clerk/nextjs";
-import { getIsOwner } from "@/actions/getIsOwner";
 
 interface ParamsProps {
   params: { publicId: string };
@@ -68,7 +66,7 @@ const Page: React.FC<ParamsProps> = async ({ params: { publicId } }) => {
               )}
 
               <h1 className="focus:outline-none text-4xl font-bold py-5 ">
-                {title}
+                {title || "Untitled"}
               </h1>
             </div>
 
@@ -89,23 +87,11 @@ export async function generateMetadata(
   // fetch data
   const document = await findDoc(publicId);
 
-  const { userId } = auth();
-
-  if (!userId) {
-    return redirect(`/$sign-in`);
-  }
-
-  const isOwner = await getIsOwner(publicId, userId);
-
   // optionally access and extend (rather than replace) parent metadata
   const previousImages = (await parent).openGraph?.images || [];
 
   return {
-    title: !document
-      ? "Not Found"
-      : !isOwner
-      ? "Forbidden"
-      : document.title || "Untitled",
+    title: document?.title || "Untitled",
     openGraph: {
       images: [...previousImages],
     },
@@ -114,9 +100,7 @@ export async function generateMetadata(
         {
           type: "image/x-icon",
           sizes: "any",
-          url: !isOwner
-            ? "/favicon.ico"
-            : document?.iconImage?.url ?? "/favicon.ico",
+          url: document?.iconImage?.url ?? "/favicon.ico",
         },
       ],
     },
