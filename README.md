@@ -11,11 +11,11 @@ Features:
 - Full responsivity and mobile UI
 - Intercepting Routes modal next.js (sign-in&sign-up)
 - Global title and icon current document on metadata, sidebar, header and main page
-- editor and suggestion using command tiptap
+- Editor and suggestion using command tiptap
 - Authentication and custom component with Clerk
-- client fetch with @tanstack/react-query
-- create update, and delete a document
-- share a document
+- Client fetch with @tanstack/react-query
+- Create update, and delete a document
+- Share a document
 - Forbidden.tsx when try open others user editor
 - Image upload, update, and delete using Cloudinary CDN (signed&invalidate)
 - ORM using Prisma and prisma-json-types-generator
@@ -40,17 +40,19 @@ Node version 18.x.x
    > It must install with flag --force because i used prisma-json-types-generator
 
 ### Setup
-
 1. Setup cloudinary
 
-   Watch this tutorial : [Tutorial](https://github.com/raihan-ramadhan/notion-clone/assets/116264857/34a66d6d-9f9d-448b-bae0-5ab0e95c17be), the result will be as below
+   Watch this [Tutorial](https://github.com/raihan-ramadhan/notion-clone/assets/116264857/34a66d6d-9f9d-448b-bae0-5ab0e95c17be), the result will be as below
   ![preset cloudinary](https://github.com/raihan-ramadhan/notion-clone/assets/116264857/e4aa1525-4599-4c14-b89f-7793bf01f8aa)
 
    and copy-paste env cloudinary from dashboard to our .env
   ![dashboard cloudinary](https://github.com/raihan-ramadhan/notion-clone/assets/116264857/f54442ec-7ab8-425c-a047-76f4625951f4)
    
 
-1. Setup clerk, make one and get API keys
+1. Setup clerk
+   
+   watch this [Tutorial](https://github.com/raihan-ramadhan/notion-clone/assets/116264857/5288ae00-13d1-40e9-9424-61595fbb98c5)
+
 1. Setup .env file
 
    ```js
