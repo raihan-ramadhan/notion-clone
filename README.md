@@ -80,12 +80,12 @@ Node version 18.x.x
    NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME = "get_from_dashboard_cloudinary";
    NEXT_PUBLIC_CLOUDINARY_API_KEY = "get_from_dashboard_cloudinary";
 
-   NEXT_PUBLIC_CLERK_SIGN_IN_URL = "/sign-in";
-   NEXT_PUBLIC_CLERK_SIGN_UP_URL = "/sign-up";
-   NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL = "/";
-   NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL = "/";
-   NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY = "get_from_dashboard_api_clerk";
-   CLERK_SECRET_KEY = "get_from_dashboard_api_clerk";
+   NEXT_PUBLIC_CLERK_SIGN_IN_URL="/sign-in";
+   NEXT_PUBLIC_CLERK_SIGN_UP_URL="/sign-up";
+   NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL="/";
+   NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL="/";
+   NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY="get_from_dashboard_api_clerk";
+   CLERK_SECRET_KEY="get_from_dashboard_api_clerk";
    ```
 
 1. Setup Prisma
