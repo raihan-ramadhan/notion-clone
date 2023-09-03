@@ -16,12 +16,12 @@ export default async function Home() {
 
     // find first document to redirect if already logged in
     if (document) {
-      return redirect(`/${document.publicId}`);
+      return redirect(`/${document.id}`);
     } else {
       //   if there is no doc yet make one then redirect
-      const { publicId } = await createUntitled(userId);
+      const { id } = await createUntitled(userId);
 
-      return redirect(`/${publicId}`);
+      return redirect(`/${id}`);
     }
   }
 

@@ -24,10 +24,10 @@ export async function PATCH(request: Request, context: Context) {
 
     // Validate the route params
     const {
-      params: { publicId },
+      params: { documentId },
     } = routeContextSchema.parse(context);
 
-    const isOwner = await getIsOwner(publicId, userId);
+    const isOwner = await getIsOwner(documentId, userId);
 
     if (!isOwner) {
       return new Response("Forbidden", { status: 403 });
@@ -51,12 +51,12 @@ export async function PATCH(request: Request, context: Context) {
     await prisma.document.update({ where: { id }, data });
 
     // prettier-ignore
-    const path = `${isIconImage ? CLOUDINARY_ICON_IMAGE_FOLDER : CLOUDINARY_COVER_IMAGE_FOLDER}/${publicId}`;
+    const path = `${isIconImage ? CLOUDINARY_ICON_IMAGE_FOLDER : CLOUDINARY_COVER_IMAGE_FOLDER}/${documentId}`;
 
     const { result } = await deleteImg(path);
 
     if (result == "not found") {
-      return new Response(`Image with public id ${publicId} not founded`, {
+      return new Response(`Image with id ${documentId} not founded`, {
         status: 404,
       });
     }

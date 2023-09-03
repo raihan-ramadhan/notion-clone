@@ -10,9 +10,9 @@ export async function POST() {
       return new Response("Unauthorized", { status: 401 });
     }
 
-    const { publicId } = await createUntitled(userId);
+    const { id } = await createUntitled(userId);
 
-    return NextResponse.json(publicId, { status: 201 });
+    return NextResponse.json(id, { status: 201 });
   } catch (error: any) {
     return NextResponse.json(
       {

@@ -26,10 +26,10 @@ export async function DELETE(req: Request, context: Context) {
 
     // Validate the route params.
     const {
-      params: { publicId },
+      params: { documentId },
     } = routeContextSchema.parse(context);
 
-    const isOwner = await getIsOwner(publicId, userId);
+    const isOwner = await getIsOwner(documentId, userId);
 
     if (!isOwner) {
       return new Response("Forbidden", { status: 403 });
@@ -46,20 +46,20 @@ export async function DELETE(req: Request, context: Context) {
     // run 3 function, delete document on mongodb, delete iconImage and coverImage(whether there is or not because it will return {result:"not found"} or {"result": "ok"})
     await Promise.all([
       deleteDocMongDB(),
-      deleteImg(`${CLOUDINARY_ICON_IMAGE_FOLDER}/${publicId}`),
-      deleteImg(`${CLOUDINARY_COVER_IMAGE_FOLDER}/${publicId}`),
+      deleteImg(`${CLOUDINARY_ICON_IMAGE_FOLDER}/${documentId}`),
+      deleteImg(`${CLOUDINARY_COVER_IMAGE_FOLDER}/${documentId}`),
     ]);
 
-    if (publicId == currentDoc) {
-      // if doc that we want delete is same with current publicId (current page) then redirect to the first doc
+    if (documentId == currentDoc) {
+      // if doc that we want delete is same with current id (current page) then redirect to the first doc
       const document = await getInitialDoc(userId);
       if (document) {
-        return NextResponse.json(document.publicId);
+        return NextResponse.json(document.id);
       }
 
       // if there is no doc from user then create one
       const newDocument = await createUntitled(userId);
-      return NextResponse.json(newDocument.publicId, { status: 201 });
+      return NextResponse.json(newDocument.id, { status: 201 });
     }
 
     return NextResponse.json(null, { status: 200 });
@@ -87,10 +87,10 @@ export async function PATCH(req: Request, context: Context) {
 
     // Validate the route params.
     const {
-      params: { publicId },
+      params: { documentId },
     } = routeContextSchema.parse(context);
 
-    const isOwner = await getIsOwner(publicId, userId);
+    const isOwner = await getIsOwner(documentId, userId);
 
     if (!isOwner) {
       return new Response("Forbidden", { status: 403 });
@@ -100,7 +100,7 @@ export async function PATCH(req: Request, context: Context) {
     const { editorJson, id } = DocumentUpdateValidator.parse(body);
 
     await prisma.document.update({
-      where: { id, publicId },
+      where: { id },
       data: { editorJson },
     });
 

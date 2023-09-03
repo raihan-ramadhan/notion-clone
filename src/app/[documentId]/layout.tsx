@@ -3,10 +3,11 @@ import React from "react";
 import { cookies } from "next/headers";
 import ReactResizablePanels from "@/components/ReactResizablePanels";
 import { findDoc } from "@/actions/findDoc";
+import { isValidObjectID } from "@/lib/utils";
 
 interface LayoutProps {
   children: React.ReactNode;
-  params: { publicId: string };
+  params: { documentId: string };
 }
 
 function getDefaultLayout() {
@@ -19,9 +20,13 @@ function getDefaultLayout() {
 
 const Layout: React.FC<LayoutProps> = async ({
   children,
-  params: { publicId },
+  params: { documentId },
 }) => {
-  const document = await findDoc(publicId);
+  const validObjectID = isValidObjectID(documentId);
+
+  if (!validObjectID) return notFound();
+
+  const document = await findDoc(documentId);
 
   if (!document) return notFound();
 

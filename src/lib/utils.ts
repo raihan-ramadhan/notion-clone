@@ -73,3 +73,8 @@ export function formatTimeToNow(date: Date): string {
     },
   });
 }
+
+export function isValidObjectID(str: string) {
+  const hexRegex = /^[0-9a-fA-F]{24}$/;
+  return hexRegex.test(str);
+}

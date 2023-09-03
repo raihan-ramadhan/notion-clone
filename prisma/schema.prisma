@@ -13,10 +13,9 @@ generator json {
 
 model Document {
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
-  publicId   String
+  ownerId    String   @db.String
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
-  ownerId    String   @db.String
   title      String   @db.String
   /// [EditorJson]
   editorJson Json?
@@ -24,4 +23,7 @@ model Document {
   iconImage  Json?
   /// [ImageType]
   coverImage Json?
+
+  @@index([ownerId])
+  @@index([ownerId, id])
 }

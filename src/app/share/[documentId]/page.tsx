@@ -1,18 +1,22 @@
 import { findDoc } from "@/actions/findDoc";
 import Header from "@/components/Header";
 import Output from "@/components/Editor/Output";
-import { cn } from "@/lib/utils";
+import { cn, isValidObjectID } from "@/lib/utils";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { ScrollArea } from "@/components/ui/ScrollArea";
 import { Metadata, ResolvingMetadata } from "next";
 
 interface ParamsProps {
-  params: { publicId: string };
+  params: { documentId: string };
 }
 
-const Page: React.FC<ParamsProps> = async ({ params: { publicId } }) => {
-  const doc = await findDoc(publicId);
+const Page: React.FC<ParamsProps> = async ({ params: { documentId } }) => {
+  const validObjectID = isValidObjectID(documentId);
+
+  if (!validObjectID) return notFound();
+
+  const doc = await findDoc(documentId);
 
   if (!doc) return notFound();
 
@@ -81,14 +85,34 @@ const Page: React.FC<ParamsProps> = async ({ params: { publicId } }) => {
 export default Page;
 
 export async function generateMetadata(
-  { params: { publicId } }: ParamsProps,
+  { params: { documentId } }: ParamsProps,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
+  const previousImages = (await parent).openGraph?.images || [];
+
+  const validObjectID = isValidObjectID(documentId);
+
+  if (!validObjectID)
+    return {
+      title: "Not Found",
+      openGraph: {
+        images: [...previousImages],
+      },
+      icons: {
+        icon: [
+          {
+            type: "image/x-icon",
+            sizes: "any",
+            url: "/favicon.ico",
+          },
+        ],
+      },
+    };
+
   // fetch data
-  const document = await findDoc(publicId);
+  const document = await findDoc(documentId);
 
   // optionally access and extend (rather than replace) parent metadata
-  const previousImages = (await parent).openGraph?.images || [];
 
   return {
     title: document?.title || "Untitled",

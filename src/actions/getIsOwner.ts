@@ -1,10 +1,10 @@
 import "server-only";
 import { prisma } from "@/lib/db";
 
-export async function getIsOwner(publicId: string, ownerId: string) {
+export async function getIsOwner(id: string, ownerId: string) {
   const count = await prisma.document.count({
     where: {
-      publicId,
+      id,
       ownerId,
     },
   });

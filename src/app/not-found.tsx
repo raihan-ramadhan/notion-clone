@@ -19,7 +19,7 @@ const Page: React.FC = async () => {
       <span>This content does not exist</span>
       <Link
         className={buttonVariants({ variant: "default" })}
-        href={document?.publicId ? `/${document.publicId}` : "/"}
+        href={document?.id ? `/${document.id}` : "/"}
       >
         Back to my content
       </Link>

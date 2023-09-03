@@ -21,7 +21,7 @@ interface MoreDialogProps {
   isLoading: boolean;
   children: React.ReactNode;
   isCoverImage?: boolean;
-  publicId: string;
+  id: string;
   isOpen: boolean;
   toggle: () => void;
 }
@@ -31,7 +31,7 @@ const MenuDialog: React.FC<MoreDialogProps> = ({
   children,
   isCoverImage,
   onDelete,
-  publicId,
+  id,
   onSuccess,
   toggle,
   isOpen,
@@ -67,7 +67,7 @@ const MenuDialog: React.FC<MoreDialogProps> = ({
             maxFiles: 1,
             resourceType: "image",
             folder: CLOUDINARY_ICON_IMAGE_FOLDER,
-            publicId,
+            publicId: id,
             cropping: true,
             croppingAspectRatio: 1,
             showSkipCropButton: false,

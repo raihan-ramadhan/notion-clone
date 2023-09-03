@@ -5,7 +5,7 @@ import { InitialDoc } from "@/types/db";
 export async function getInitialDoc(ownerId: string) {
   const documents: InitialDoc = await prisma.document.findFirst({
     where: { ownerId },
-    select: { publicId: true },
+    select: { id: true },
   });
   return documents;
 }

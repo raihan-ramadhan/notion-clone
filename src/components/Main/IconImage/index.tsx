@@ -19,14 +19,12 @@ import MenuDialog from "./MenuDialog";
 interface IconImageProps {
   isCoverImage?: boolean;
   iconImage: Document["iconImage"];
-  publicId: string;
   id: string;
 }
 
 const IconImage: React.FC<IconImageProps> = ({
   isCoverImage,
   iconImage,
-  publicId,
   id,
 }) => {
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
@@ -51,7 +49,7 @@ const IconImage: React.FC<IconImageProps> = ({
           iconImageUrl: result.info.secure_url,
         };
 
-        await axios.patch(`/api/images/${publicId}`, payload);
+        await axios.patch(`/api/images/${id}`, payload);
 
         startTransition(() => {
           queryClient.invalidateQueries({ queryKey: ["docs"] });
@@ -82,7 +80,7 @@ const IconImage: React.FC<IconImageProps> = ({
 
       const payload: RemoveIconImagePayload = { id, isIconImage: true };
 
-      await axios.patch(`/api/images/remove/${publicId}`, payload);
+      await axios.patch(`/api/images/remove/${id}`, payload);
 
       startTransition(() => {
         queryClient.invalidateQueries({ queryKey: ["docs"] });
@@ -146,7 +144,7 @@ const IconImage: React.FC<IconImageProps> = ({
         isCoverImage={isCoverImage}
         onDelete={onDelete}
         onSuccess={onSuccess}
-        publicId={publicId}
+        id={id}
       >
         <Content />
       </MenuDropdown>
@@ -154,7 +152,7 @@ const IconImage: React.FC<IconImageProps> = ({
       <MenuDialog
         onSuccess={onSuccess}
         onDelete={onDelete}
-        publicId={publicId}
+        id={id}
         isLoading={isUpdating || isDeleting}
         isCoverImage={isCoverImage}
         isOpen={isOpen}

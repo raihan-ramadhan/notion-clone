@@ -15,11 +15,9 @@ import Skeleton from "./Skeleton";
 export default function Editor({
   editorJson,
   id,
-  publicId,
 }: {
   editorJson: any;
   id: string;
-  publicId: string;
 }) {
   const router = useRouter();
   // eslint-disable-next-line no-unused-vars
@@ -35,7 +33,7 @@ export default function Editor({
         setIsSaving(true);
         const payload: UpdateDocumentPayload = { id, editorJson };
 
-        await axios.patch(`/api/documents/${publicId}`, payload);
+        await axios.patch(`/api/documents/${id}`, payload);
 
         startTransition(() => {
           // Force a cache invalidation.
@@ -60,7 +58,7 @@ export default function Editor({
         });
       }
     },
-    [id, publicId, router, setIsSaving]
+    [id, router, setIsSaving]
   );
 
   const debouncedUpdates = useDebouncedCallback(async ({ editor }) => {

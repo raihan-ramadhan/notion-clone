@@ -15,11 +15,10 @@ import { toast, toastError } from "@/hooks/use-toast";
 import { CoverImagePayload } from "@/lib/validators/route";
 
 interface CoverImageBtnProps {
-  publicId: string;
   id: string;
 }
 
-const CoverImgUploadBtn: React.FC<CoverImageBtnProps> = ({ publicId, id }) => {
+const CoverImgUploadBtn: React.FC<CoverImageBtnProps> = ({ id }) => {
   // eslint-disable-next-line no-unused-vars
   const [_, startTransition] = useTransition();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -35,7 +34,7 @@ const CoverImgUploadBtn: React.FC<CoverImageBtnProps> = ({ publicId, id }) => {
           coverImageUrl: result.info.secure_url,
         };
 
-        await axios.patch(`/api/images/${publicId}`, payload);
+        await axios.patch(`/api/images/${id}`, payload);
 
         startTransition(() => {
           router.refresh();
@@ -70,7 +69,7 @@ const CoverImgUploadBtn: React.FC<CoverImageBtnProps> = ({ publicId, id }) => {
         maxFiles: 1,
         resourceType: "image",
         folder: CLOUDINARY_COVER_IMAGE_FOLDER,
-        publicId,
+        publicId: id,
         cropping: true,
         croppingAspectRatio: 3,
         showSkipCropButton: false,

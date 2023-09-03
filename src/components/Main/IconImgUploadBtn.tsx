@@ -15,11 +15,10 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 
 interface IconImageBtnProps {
-  publicId: string;
   id: string;
 }
 
-const IconImgUploadBtn: React.FC<IconImageBtnProps> = ({ publicId, id }) => {
+const IconImgUploadBtn: React.FC<IconImageBtnProps> = ({ id }) => {
   // eslint-disable-next-line no-unused-vars
   const [_, startTransition] = useTransition();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -36,7 +35,7 @@ const IconImgUploadBtn: React.FC<IconImageBtnProps> = ({ publicId, id }) => {
           iconImageUrl: result.info.secure_url,
         };
 
-        await axios.patch(`/api/images/${publicId}`, payload);
+        await axios.patch(`/api/images/${id}`, payload);
 
         startTransition(() => {
           queryClient.invalidateQueries({ queryKey: ["docs"] });
@@ -72,7 +71,7 @@ const IconImgUploadBtn: React.FC<IconImageBtnProps> = ({ publicId, id }) => {
         maxFiles: 1,
         resourceType: "image",
         folder: CLOUDINARY_ICON_IMAGE_FOLDER,
-        publicId,
+        publicId: id,
         cropping: true,
         croppingAspectRatio: 1,
         showSkipCropButton: false,

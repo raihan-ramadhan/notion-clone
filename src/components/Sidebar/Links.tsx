@@ -20,7 +20,6 @@ interface Redirect {
 }
 
 export type MutationProps = {
-  publicId: string;
   id: string;
   callback?: () => void;
 };
@@ -46,10 +45,10 @@ export default function Links({
 
   const { title } = useTitle();
 
-  const currentDoc = params.publicId;
+  const currentDoc = params.documentId;
 
   const { mutate } = useMutation({
-    mutationFn: async ({ publicId, id, callback }: MutationProps) => {
+    mutationFn: async ({ id, callback }: MutationProps) => {
       if (callback) callback();
 
       const payload: DeleteDocumentPayload = {
@@ -58,7 +57,7 @@ export default function Links({
       };
 
       const { data: redirect }: Redirect = await axios.delete(
-        `/api/documents/${publicId}`,
+        `/api/documents/${id}`,
         { data: payload }
       );
 
@@ -69,7 +68,7 @@ export default function Links({
         if (error.response?.status === 422) {
           toastError({
             title: "Invalid payload axios.",
-            axiosPayloadDesc: "Please provide publicId, currentDoc, and id",
+            axiosPayloadDesc: "Please provide currentDoc and id",
             error,
           });
           return;
@@ -104,17 +103,17 @@ export default function Links({
     <>
       {docs.map((doc) => {
         const linkTitle =
-          (currentDoc == doc.publicId ? title : doc.title) || "Untitled";
+          (currentDoc == doc.id ? title : doc.title) || "Untitled";
 
         return (
-          <li key={doc.publicId}>
+          <li key={doc.id}>
             <Link
               tabIndex={0}
-              href={`/${doc.publicId}`}
-              onClick={(e) => handleClick(e, doc.publicId)}
+              href={`/${doc.id}`}
+              onClick={(e) => handleClick(e, doc.id)}
               className={cn(
                 "flex hover:bg-accent w-full items-center px-2 py-[2px] cursor-pointer rounded-sm transition-colors duration-200 overflow-x-hidden focus:outline-none focus-visible:ring-1 focus-visible:ring-ring",
-                currentDoc == doc.publicId && size != "medium" && "bg-accent",
+                currentDoc == doc.id && size != "medium" && "bg-accent",
                 size == "medium" && "px-4 py-3 rounded-none",
                 isMobile && "px-1 py-2"
               )}

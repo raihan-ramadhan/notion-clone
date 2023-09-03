@@ -3,7 +3,7 @@ import Header from "@/components/Header";
 import CoverImgUploadBtn from "@/components/Main/CoverImgUploadBtn";
 import CoverImage from "@/components/Main/coverImage";
 import IconImgUploadBtn from "@/components/Main/IconImgUploadBtn";
-import { cn } from "@/lib/utils";
+import { cn, isValidObjectID } from "@/lib/utils";
 import { Metadata, ResolvingMetadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import IconImage from "@/components/Main/IconImage";
@@ -15,11 +15,15 @@ import Title from "@/components/Main/Title";
 import { ScrollArea } from "@/components/ui/ScrollArea";
 
 interface ParamsProps {
-  params: { publicId: string };
+  params: { documentId: string };
 }
 
-const Page: React.FC<ParamsProps> = async ({ params: { publicId } }) => {
-  const doc = await findDoc(publicId);
+const Page: React.FC<ParamsProps> = async ({ params: { documentId } }) => {
+  const validObjectID = isValidObjectID(documentId);
+
+  if (!validObjectID) return notFound();
+
+  const doc = await findDoc(documentId);
 
   if (!doc) return notFound();
 
@@ -29,13 +33,13 @@ const Page: React.FC<ParamsProps> = async ({ params: { publicId } }) => {
     return redirect(`/$sign-in`);
   }
 
-  const isOwner = await getIsOwner(publicId, userId);
+  const isOwner = await getIsOwner(documentId, userId);
 
   if (!isOwner) {
     return <Forbidden />;
   }
 
-  const { title, coverImage, iconImage, id, editorJson } = doc;
+  const { title, coverImage, iconImage, editorJson } = doc;
 
   return (
     <>
@@ -43,9 +47,7 @@ const Page: React.FC<ParamsProps> = async ({ params: { publicId } }) => {
 
       <ScrollArea className="h-[calc(100vh_-_48px)]" type="always">
         <main className="flex flex-col h-[inherit]">
-          {coverImage && (
-            <CoverImage coverImage={coverImage} id={id} publicId={publicId} />
-          )}
+          {coverImage && <CoverImage coverImage={coverImage} id={documentId} />}
 
           <section className="flex flex-col flex-1 w-full">
             <div
@@ -59,8 +61,7 @@ const Page: React.FC<ParamsProps> = async ({ params: { publicId } }) => {
             >
               {iconImage && (
                 <IconImage
-                  id={id}
-                  publicId={publicId}
+                  id={documentId}
                   isCoverImage={!!coverImage}
                   iconImage={iconImage}
                 />
@@ -68,19 +69,15 @@ const Page: React.FC<ParamsProps> = async ({ params: { publicId } }) => {
 
               {!(iconImage && coverImage) && (
                 <div className="h-6 inline-flex gap-2 mt-5">
-                  {!iconImage && (
-                    <IconImgUploadBtn publicId={publicId} id={id} />
-                  )}
-                  {!coverImage && (
-                    <CoverImgUploadBtn publicId={publicId} id={id} />
-                  )}
+                  {!iconImage && <IconImgUploadBtn id={documentId} />}
+                  {!coverImage && <CoverImgUploadBtn id={documentId} />}
                 </div>
               )}
 
-              <Title currentTitle={title} publicId={publicId} id={id} />
+              <Title currentTitle={title} id={documentId} />
             </div>
 
-            <Editor id={id} editorJson={editorJson} publicId={publicId} />
+            <Editor id={documentId} editorJson={editorJson} />
           </section>
         </main>
       </ScrollArea>
@@ -91,11 +88,32 @@ const Page: React.FC<ParamsProps> = async ({ params: { publicId } }) => {
 export default Page;
 
 export async function generateMetadata(
-  { params: { publicId } }: ParamsProps,
+  { params: { documentId } }: ParamsProps,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
+  const previousImages = (await parent).openGraph?.images || [];
+
+  const validObjectID = isValidObjectID(documentId);
+
+  if (!validObjectID)
+    return {
+      title: "Not Found",
+      openGraph: {
+        images: [...previousImages],
+      },
+      icons: {
+        icon: [
+          {
+            type: "image/x-icon",
+            sizes: "any",
+            url: "/favicon.ico",
+          },
+        ],
+      },
+    };
+
   // fetch data
-  const document = await findDoc(publicId);
+  const document = await findDoc(documentId);
 
   const { userId } = auth();
 
@@ -103,10 +121,9 @@ export async function generateMetadata(
     return redirect(`/$sign-in`);
   }
 
-  const isOwner = await getIsOwner(publicId, userId);
+  const isOwner = await getIsOwner(documentId, userId);
 
   // optionally access and extend (rather than replace) parent metadata
-  const previousImages = (await parent).openGraph?.images || [];
 
   return {
     title: !document

@@ -20,7 +20,7 @@ interface MoreDialogProps {
   onSuccess: (result: any) => void;
   onDelete: () => void;
   isLoading: boolean;
-  publicId: string;
+  id: string;
   isOpen: boolean;
   toggle: () => void;
 }
@@ -28,7 +28,7 @@ interface MoreDialogProps {
 const MenuDialog: React.FC<MoreDialogProps> = ({
   isLoading,
   onDelete,
-  publicId,
+  id,
   onSuccess,
   toggle,
   isOpen,
@@ -69,7 +69,7 @@ const MenuDialog: React.FC<MoreDialogProps> = ({
             maxFiles: 1,
             resourceType: "image",
             folder: CLOUDINARY_COVER_IMAGE_FOLDER,
-            publicId,
+            publicId: id,
             cropping: true,
             croppingAspectRatio: 3,
             showSkipCropButton: false,

@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const routeContextSchema = z.object({
   params: z.object({
-    publicId: z.string(),
+    documentId: z.string(),
   }),
 });
 

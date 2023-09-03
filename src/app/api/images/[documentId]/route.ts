@@ -19,10 +19,10 @@ export async function PATCH(request: Request, context: Context) {
 
     // Validate the route params
     const {
-      params: { publicId },
+      params: { documentId },
     } = routeContextSchema.parse(context);
 
-    const isOwner = await getIsOwner(publicId, userId);
+    const isOwner = await getIsOwner(documentId, userId);
 
     if (!isOwner) {
       return new Response("Forbidden", { status: 403 });
@@ -47,7 +47,7 @@ export async function PATCH(request: Request, context: Context) {
 
     // Update the document
     await prisma.document.update({
-      where: { publicId, id },
+      where: { id },
       data,
     });
 

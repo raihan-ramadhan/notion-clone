@@ -12,11 +12,10 @@ import { useDebouncedCallback } from "use-debounce";
 
 interface TitleProps {
   currentTitle: string;
-  publicId: string;
   id: string;
 }
 
-const Title: React.FC<TitleProps> = ({ currentTitle, publicId, id }) => {
+const Title: React.FC<TitleProps> = ({ currentTitle, id }) => {
   const { setIsSaving } = useSaving();
   const queryClient = useQueryClient();
   const router = useRouter();
@@ -26,7 +25,7 @@ const Title: React.FC<TitleProps> = ({ currentTitle, publicId, id }) => {
       setIsSaving(true);
       const payload: UpdateTitlePayload = { title: value, id };
 
-      await axios.patch(`/api/documents/title/${publicId}`, payload);
+      await axios.patch(`/api/documents/title/${id}`, payload);
 
       startTransition(() => {
         // Force a cache invalidation.

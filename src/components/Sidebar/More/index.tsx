@@ -25,10 +25,9 @@ const More: React.FC<MoreProps> = ({ doc, mutate, isMobile }) => {
   const openMenu = () => setIsOpen(true);
   const closeMenu = () => setIsOpen(false);
 
-  const onDelete = ({ publicId, id }: DocumentType) => {
+  const onDelete = ({ id }: DocumentType) => {
     mutate(
       {
-        publicId,
         id,
         callback: () => setIsLoading(true),
       },

@@ -21,12 +21,12 @@ interface IconImageProps {
   onSuccess: (result: any) => void;
   onDelete: () => void;
   children: React.ReactNode;
-  publicId: string;
+  id: string;
   isCoverImage?: boolean;
 }
 
 const MenuDropdown: React.FC<IconImageProps> = ({
-  publicId,
+  id,
   children,
   onSuccess,
   onDelete,
@@ -50,7 +50,7 @@ const MenuDropdown: React.FC<IconImageProps> = ({
             maxFiles: 1,
             resourceType: "image",
             folder: CLOUDINARY_ICON_IMAGE_FOLDER,
-            publicId,
+            publicId: id,
             cropping: true,
             croppingAspectRatio: 1,
             showSkipCropButton: false,

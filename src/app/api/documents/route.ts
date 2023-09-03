@@ -14,7 +14,6 @@ export async function GET() {
     const docs: DocumentType[] = await prisma.document.findMany({
       where: { ownerId: userId },
       select: {
-        publicId: true,
         title: true,
         id: true,
         iconImage: true,

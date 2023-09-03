@@ -1,9 +1,9 @@
 import "server-only";
 import { prisma } from "@/lib/db";
 
-export async function findDoc(publicId: string) {
+export async function findDoc(id: string) {
   const document = await prisma.document.findFirst({
-    where: { publicId },
+    where: { id },
   });
   return document;
 }

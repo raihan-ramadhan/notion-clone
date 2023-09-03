@@ -12,7 +12,7 @@ interface MenuProps {
   onDelete: () => void;
   isUpdating: boolean;
   isDeleting: boolean;
-  publicId: string;
+  id: string;
 }
 
 const Menu: React.FC<MenuProps> = ({
@@ -20,7 +20,7 @@ const Menu: React.FC<MenuProps> = ({
   isUpdating,
   onDelete,
   onSuccess,
-  publicId,
+  id,
 }) => {
   return (
     <div className="absolute bottom-2 right-24 hidden md:flex opacity-0 group-hover:opacity-100 transition-opacity">
@@ -30,7 +30,7 @@ const Menu: React.FC<MenuProps> = ({
           maxFiles: 1,
           resourceType: "image",
           folder: CLOUDINARY_COVER_IMAGE_FOLDER,
-          publicId,
+          publicId: id,
           cropping: true,
           croppingAspectRatio: 3,
           showSkipCropButton: false,

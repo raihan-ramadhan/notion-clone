@@ -19,15 +19,10 @@ import MenuDialog from "./MenuDialog";
 
 interface CoverImageProps {
   id: string;
-  publicId: string;
   coverImage: Document["coverImage"];
 }
 
-const CoverImage: React.FC<CoverImageProps> = ({
-  id,
-  publicId,
-  coverImage,
-}) => {
+const CoverImage: React.FC<CoverImageProps> = ({ id, coverImage }) => {
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
   const [isUpdating, setIsUpdating] = useState<boolean>(false);
   const router = useRouter();
@@ -49,7 +44,7 @@ const CoverImage: React.FC<CoverImageProps> = ({
           coverImageUrl: result.info.secure_url,
         };
 
-        await axios.patch(`/api/images/${publicId}`, payload);
+        await axios.patch(`/api/images/${id}`, payload);
 
         startTransition(() => {
           queryClient.invalidateQueries({ queryKey: ["docs"] });
@@ -80,7 +75,7 @@ const CoverImage: React.FC<CoverImageProps> = ({
 
       const payload: RemoveCoverImagePayload = { id, isCoverImage: true };
 
-      await axios.patch(`/api/images/remove/${publicId}`, payload);
+      await axios.patch(`/api/images/remove/${id}`, payload);
 
       startTransition(() => {
         queryClient.invalidateQueries({ queryKey: ["docs"] });
@@ -140,7 +135,7 @@ const CoverImage: React.FC<CoverImageProps> = ({
             isUpdating={isUpdating}
             onDelete={onDelete}
             onSuccess={onSuccess}
-            publicId={publicId}
+            id={id}
           />
         ) : null}
         <MenuDialog
@@ -148,7 +143,7 @@ const CoverImage: React.FC<CoverImageProps> = ({
           isOpen={isOpen}
           onDelete={onDelete}
           onSuccess={onSuccess}
-          publicId={publicId}
+          id={id}
           toggle={toggle}
         />
       </div>
