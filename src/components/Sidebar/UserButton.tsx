@@ -29,6 +29,7 @@ const UserButton: React.FC<UserButtonProps> = ({ onClick }) => {
                 userButtonPopoverFooter: "[&_*]:text-primary/30",
               },
             }}
+            afterSignOutUrl="/"
           />
           <div className="absolute top-1/2 -translate-y-1/2 font-semibold w-full flex-1 flex items-center pointer-events-none select-none ring-inset pl-14 pr-9 z-0">
             <span className="truncate overflow-hidden w-max">
