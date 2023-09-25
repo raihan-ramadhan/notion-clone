@@ -107,7 +107,4 @@ npm run dev
 
 ---
 
-### Little Bug and Improvement opportunity
-
-- little bug on resizable-panel component, **Solution** = `i need new feature in react-resizable-panel library`
-- create generateHTML for editor tiptap so no need to show loading state in Editor Component and show immediately after refresh
+email me if you have question 👋
