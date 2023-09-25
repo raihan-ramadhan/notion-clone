@@ -27,12 +27,6 @@ const Sidebar: React.FC<Sidebar> = ({ toggleSidebar, addDoc, query }) => {
             </div>
           </Search>
 
-          <SidebarMenuItem
-            className="cursor-not-allowed"
-            iconName="Clock"
-            text="Updates"
-          />
-
           <Setting>
             <div>
               <SidebarMenuItem iconName="Gear" text="Setting" />

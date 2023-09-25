@@ -1,24 +1,19 @@
 "use client";
 
 import axios from "axios";
-import Sidebar from "./Sidebar";
-import MobileSidebar from "./Sidebar/MobileSidebar";
-
+import Sidebar from "../Sidebar";
+import MobileSidebar from "../Sidebar/MobileSidebar";
 import { cn } from "@/lib/utils";
 import { toast, toastError } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { DocumentType } from "@/types/db";
-import { useEffect, useRef } from "react";
 import { useShowMobileSidebar } from "@/hooks/use-show-mobile-sidebar";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import {
-  Panel,
-  PanelGroup,
-  PanelResizeHandle,
-  ImperativePanelHandle,
-} from "react-resizable-panels";
 import { useShowSidebarContext } from "@/lib/context/show-sidebar-context";
+import PanelGroup from "./PanelGroup";
+import PanelSidebar from "./PanelSidebar";
+import PanelResizeHandler from "./PanelResizeHandler";
 
 interface Data {
   data: DocumentType[] | undefined;
@@ -39,17 +34,12 @@ export default function ReactResizablePanels({
   defaultLayout,
   right,
 }: {
-  defaultLayout: number[];
+  defaultLayout: number;
   right: React.ReactNode;
 }) {
   const { showMobileSidebar, toggleMobileSidebar } = useShowMobileSidebar();
 
-  const onLayout = (sizes: number[]) => {
-    document.cookie = `react-resizable-panels:layout=${JSON.stringify(sizes)}`;
-  };
-
   const router = useRouter();
-  const ref = useRef<ImperativePanelHandle>(null);
 
   const query = useDocs();
   const queryClient = useQueryClient();
@@ -80,36 +70,29 @@ export default function ReactResizablePanels({
   const showSidebar = useShowSidebarContext((s) => s.showSidebar);
   const toggleSidebar = useShowSidebarContext((s) => s.toggleSidebar);
 
-  useEffect(() => {
-    const panel = ref.current;
-    if (panel) {
-      showSidebar ? panel.collapse() : panel.expand();
-    }
-  }, [showSidebar]);
+  const onLayout = (sizes: number) => {
+    document.cookie = `react-resizable-panels:layout=${JSON.stringify(sizes)}`;
+  };
 
   return (
-    <PanelGroup direction="horizontal" onLayout={onLayout}>
-      <Panel
-        className={cn(
-          "bg-secondary/50 max-w-[480px]",
-          showSidebar && "min-w-[220px]",
-          "hidden md:block"
-        )}
-        defaultSize={defaultLayout[0]}
-        minSize={0}
-        collapsible
-        ref={ref}
+    <PanelGroup
+      defaultLayout={defaultLayout}
+      maxWidth={480}
+      minWidth={220}
+      onLayout={onLayout}
+    >
+      <PanelSidebar
+        className="bg-secondary/50 hidden md:block"
+        collapse={!showSidebar}
       >
         <Sidebar toggleSidebar={toggleSidebar} addDoc={addDoc} query={query} />
-      </Panel>
-      <PanelResizeHandle
-        className={cn(
-          "w-[3px] bg-accent hover:bg-border",
-          !showSidebar && "pointer-events-none",
-          "!hidden md:!block"
-        )}
+      </PanelSidebar>
+      <PanelResizeHandler
+        id={"my-PanelResizeHandler"}
+        disabled={!showSidebar}
+        className={cn("w-[4px] bg-accent hover:bg-border hidden md:block")}
       />
-      <Panel className="bg-background" defaultSize={defaultLayout[1]}>
+      <div className="bg-background flex-1">
         <MobileSidebar
           addDoc={addDoc}
           query={query}
@@ -117,7 +100,7 @@ export default function ReactResizablePanels({
           toggle={toggleMobileSidebar}
         />
         {right}
-      </Panel>
+      </div>
     </PanelGroup>
   );
 }

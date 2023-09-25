@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import React from "react";
 import { cookies } from "next/headers";
-import ReactResizablePanels from "@/components/ReactResizablePanels";
+import ReactResizablePanels from "@/components/MyResizablePanels/ResizablePanels";
 import { findDoc } from "@/actions/findDoc";
 import { isValidObjectID } from "@/lib/utils";
 
@@ -15,7 +15,6 @@ function getDefaultLayout() {
   if (layout) {
     return JSON.parse(layout.value);
   }
-  return [33, 67];
 }
 
 const Layout: React.FC<LayoutProps> = async ({
