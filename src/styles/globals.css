@@ -26,8 +26,12 @@ ul[data-type="taskList"] {
   @apply [&_ul_li]:list-item [&_ol_li]:list-item;
 }
 
+ul[data-type="taskList"] li[data-checked="true"] div p {
+  @apply line-through text-primary/50;
+}
+
 ul[data-type="taskList"] li input {
-  @apply appearance-none w-5 h-5 cursor-pointer bg-background;
+  @apply appearance-none w-5 h-5 cursor-pointer bg-background relative flex justify-center items-center;
 }
 ul[data-type="taskList"] li[data-checked="false"] input {
   @apply border-2 border-accent-foreground;
@@ -36,12 +40,12 @@ ul[data-type="taskList"] li[data-checked="false"] input {
 ul[data-type="taskList"] li[data-checked="true"] input {
   @apply bg-accent-foreground relative;
 }
-ul[data-type="taskList"] li[data-checked="true"] input::after {
-  @apply text-primary-foreground font-bold absolute -top-[6px] left-[3px] scale-75 content-['\002714'];
-}
 
-ul[data-type="taskList"] li[data-checked="true"] div p {
-  @apply line-through text-primary/50;
+ul[data-type="taskList"] li input::after {
+  @apply text-primary-foreground font-bold absolute inset-0 scale-0 flex justify-center items-center content-['\002714'] transition-transform;
+}
+ul[data-type="taskList"] li[data-checked="true"] input::after {
+  @apply scale-90;
 }
 
 @layer base {

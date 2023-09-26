@@ -1,10 +1,10 @@
-import StarterKit from "@tiptap/starter-kit";
-import Placeholder from "@tiptap/extension-placeholder";
-import SlashCommand from "@/components/Editor/SlashCommand";
-import Heading from "@tiptap/extension-heading";
 import { mergeAttributes } from "@tiptap/react";
+import SlashCommand from "@/components/Editor/SlashCommand";
+import Placeholder from "@tiptap/extension-placeholder";
+import StarterKit from "@tiptap/starter-kit";
 import TaskList from "@tiptap/extension-task-list";
 import TaskItem from "@tiptap/extension-task-item";
+import Heading from "@tiptap/extension-heading";
 
 export const TiptapExtensions = [
   StarterKit.configure({
@@ -44,11 +44,12 @@ export const TiptapExtensions = [
           "rounded-md bg-gray-200 px-1.5 py-1 font-mono font-medium text-black",
       },
     },
-    horizontalRule: false,
     dropcursor: {
       color: "#DBEAFE",
       width: 4,
     },
+    horizontalRule: false,
+    heading: false,
   }),
   Heading.configure({ levels: [1, 2, 3] }).extend({
     levels: [1, 2, 3],
@@ -83,8 +84,28 @@ export const TiptapExtensions = [
       class: "not-prose",
     },
   }),
-  TaskItem.configure({
-    nested: true,
+  TaskItem.configure({}).extend({
+    renderHTML({ node, HTMLAttributes }) {
+      // console.log("this", this.parent);
+      return [
+        "li",
+        mergeAttributes(this.options.HTMLAttributes, HTMLAttributes, {
+          "data-checked": HTMLAttributes["data-checked"] ? "true" : "false",
+        }),
+        [
+          "label",
+          [
+            "input",
+            {
+              type: "checkbox",
+              checked: node.attrs.checked ? "checked" : null,
+            },
+          ],
+          ["span"],
+        ],
+        ["div", 0],
+      ];
+    },
   }),
 ];
 

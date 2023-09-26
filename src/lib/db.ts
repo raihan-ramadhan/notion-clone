@@ -2,7 +2,7 @@
 import "server-only";
 import { PrismaClient } from "@prisma/client";
 import { env } from "@/env.mjs";
-import { Content } from "@tiptap/react";
+import { JSONContent } from "@tiptap/react";
 
 const globalForPrisma = globalThis as unknown as { prisma: PrismaClient };
 
@@ -21,6 +21,6 @@ declare global {
       url: string;
       timeStamp: string;
     };
-    type EditorJson = Content;
+    type EditorJson = JSONContent;
   }
 }

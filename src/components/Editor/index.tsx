@@ -1,6 +1,6 @@
 "use client";
 
-import { useEditor, EditorContent, Content } from "@tiptap/react";
+import { useEditor, EditorContent, JSONContent } from "@tiptap/react";
 import { useState, useEffect, useTransition, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
@@ -23,12 +23,12 @@ export default function Editor({
   // eslint-disable-next-line no-unused-vars
   const [_, startTransition] = useTransition();
   const [hydrated, setHydrated] = useState<boolean>(false);
-  const [content, setContent] = useState<Content>(null);
+  const [content, setContent] = useState<JSONContent | null>(null);
 
   const { setIsSaving } = useSaving();
 
   const updateEditorJson = useCallback(
-    async (editorJson: Content) => {
+    async (editorJson: JSONContent) => {
       try {
         setIsSaving(true);
         const payload: UpdateDocumentPayload = { id, editorJson };
@@ -62,7 +62,7 @@ export default function Editor({
   );
 
   const debouncedUpdates = useDebouncedCallback(async ({ editor }) => {
-    const json = editor.getJSON() as Content;
+    const json = editor.getJSON() as JSONContent;
     setContent(json);
     await updateEditorJson(json);
   }, 1000);
@@ -81,7 +81,7 @@ export default function Editor({
         // Your function logic here
         setIsSaving(true);
 
-        const json = editor.getJSON() as Content;
+        const json = editor.getJSON() as JSONContent;
         updateEditorJson(json);
       }
     };

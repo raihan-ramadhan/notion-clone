@@ -73,8 +73,7 @@ const Page: React.FC<ParamsProps> = async ({ params: { documentId } }) => {
                 {title || "Untitled"}
               </h1>
             </div>
-
-            <Output editorJson={editorJson} />
+            {editorJson ? <Output editorJson={editorJson} /> : null}
           </section>
         </main>
       </ScrollArea>
