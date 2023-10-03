@@ -51,13 +51,6 @@ const MobileSidebar: React.FC<MobileSidebarProps> = ({
               </div>
             </Search>
 
-            <SidebarMenuItem
-              isMobile
-              className="cursor-not-allowed"
-              iconName="Clock"
-              text="Updates"
-            />
-
             <Setting>
               <div>
                 <SidebarMenuItem isMobile iconName="Gear" text="Setting" />

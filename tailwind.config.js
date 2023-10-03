@@ -18,6 +18,9 @@ module.exports = {
       },
     },
     extend: {
+      fontSize: {
+        xxs: "0.6rem",
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -74,5 +77,15 @@ module.exports = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],
+  plugins: [
+    require("tailwindcss-animate"),
+    require("@tailwindcss/typography"),
+    ({ matchUtilities }) => {
+      matchUtilities({
+        x: (value) => ({
+          [`@apply ${value.replaceAll(",", " ")}`]: {},
+        }),
+      });
+    },
+  ],
 };

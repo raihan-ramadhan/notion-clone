@@ -7,7 +7,7 @@ import { cn, isValidObjectID } from "@/lib/utils";
 import { Metadata, ResolvingMetadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import IconImage from "@/components/Main/IconImage";
-import Editor from "@/components/Editor";
+import Editor from "@/components/Editor/editor";
 import { getIsOwner } from "@/actions/getIsOwner";
 import { auth } from "@clerk/nextjs";
 import Forbidden from "@/components/Main/Forbidden";

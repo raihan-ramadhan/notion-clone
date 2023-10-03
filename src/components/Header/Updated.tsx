@@ -31,7 +31,13 @@ const Updated: React.FC<UpdatedProps> = ({ updatedAt }) => {
     <span className="h-[28px] shrink-0 font-normal px-0 flex w-max items-center pointer-events-none">
       <div className="opacity-60 dark:opacity-40 gap-1 flex items-center">
         <span>Edited</span>
-        <time dateTime={new Date(updatedAt).toDateString()}>{Edited}</time>
+        <time
+          dateTime={new Date(updatedAt).toDateString()}
+          // we expect hydration warning error here, because every 1 minute we update our time so frequently in the development it will cause hydration warning because time updating while app get compile and the result is text in server and client no same (the hydration warning just appear on development)
+          suppressHydrationWarning
+        >
+          {Edited}
+        </time>
       </div>
     </span>
   );

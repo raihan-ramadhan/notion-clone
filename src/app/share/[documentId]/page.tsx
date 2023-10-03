@@ -1,6 +1,6 @@
 import { findDoc } from "@/actions/findDoc";
 import Header from "@/components/Header";
-import Output from "@/components/Editor/Output";
+import EditorPreviewer from "@/components/Editor/components/EditorPreviewer";
 import { cn, isValidObjectID } from "@/lib/utils";
 import Image from "next/image";
 import { notFound } from "next/navigation";
@@ -73,7 +73,7 @@ const Page: React.FC<ParamsProps> = async ({ params: { documentId } }) => {
                 {title || "Untitled"}
               </h1>
             </div>
-            {editorJson ? <Output editorJson={editorJson} /> : null}
+            {editorJson ? <EditorPreviewer editorJson={editorJson} /> : null}
           </section>
         </main>
       </ScrollArea>

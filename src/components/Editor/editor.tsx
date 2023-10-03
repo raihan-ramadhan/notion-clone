@@ -4,13 +4,14 @@ import { useEditor, EditorContent, JSONContent } from "@tiptap/react";
 import { useState, useEffect, useTransition, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
-import { TipTapEditorExtensions } from "@/components/Editor/extensions";
-import { TipTapEditorProps } from "@/components/Editor/props";
+import { TipTapEditorExtensions } from "@/components/Editor/lib/extensions-editor";
+import { TipTapEditorProps } from "@/components/Editor/lib/props";
 import axios, { AxiosError } from "axios";
 import { UpdateDocumentPayload } from "@/lib/validators/Documents";
 import { toastError } from "@/hooks/use-toast";
 import { useSaving } from "@/store/use-saving";
-import Skeleton from "./Skeleton";
+import Skeleton from "./components/Skeleton";
+import TextMenu from "./BubbleMenu/TextMenu";
 
 export default function Editor({
   editorJson,
@@ -102,11 +103,12 @@ export default function Editor({
 
   return (
     <div
-      onClick={() => editor?.chain().focus().run()}
-      className="relative w-full cursor-text flex-1 px-10 md:px-24 pb-16"
+      id="editor-container"
+      className="relative w-full cursor-text flex-1 px-10 md:px-24 pb-16 selection:text-[unset] selection:bg-sky-200 dark:selection:bg-sky-600/50"
     >
       {hydrated ? (
-        <div className="w-full max-w-[708px] mx-auto h-full">
+        <div id="menu-two" className="w-full max-w-[708px] mx-auto h-full">
+          <TextMenu editor={editor} />
           <EditorContent editor={editor} />
         </div>
       ) : (
